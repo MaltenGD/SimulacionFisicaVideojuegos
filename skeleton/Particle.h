@@ -2,17 +2,30 @@
 #include "Vector3D.h"
 #include <PxPhysicsAPI.h>
 #include "RenderUtils.hpp"
+#include <queue>
 
 class Particle
 {
 public:
-    Particle(Vector3D Pos, Vector3D Vel);
+    Particle(float Mass,Vector3D Pos, Vector3D Vel, Vector3D Acc, Vector3D Gravity = { 0.0f, -9.81f, 0.0f }, float Damping=1);
     ~Particle();
 
     void integrate(double t);
+    void cleanup();
+    virtual bool isAlive() const { return true; };
+    void addForce(Vector3D Force);
+    Vector3D getForce();
+
+    
 
 private:
-    Vector3D vel;
+	float massInverse;
     physx::PxTransform pose; // render item utiliza esta pose.
+    Vector3D vel;
+    Vector3D acc;
+    Vector3D gravity;
+    Vector3D force;
+    float damping;
+
     RenderItem* renderItem;
 };

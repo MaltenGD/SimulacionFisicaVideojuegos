@@ -3,6 +3,8 @@
 #include "Scene.h"
 #include "RenderUtils.hpp"
 #include <vector>
+#include "Vector3D.h"
+#include "Particle.h"
 
 class Practica0Scene : public Scene {
 public:
@@ -15,16 +17,36 @@ public:
         m_yDot_transform = physx::PxTransform(physx::PxVec3(0.0f, 10.0f, 0.0f));
         m_zDot_transform = physx::PxTransform(physx::PxVec3(0.0f, 0.0f, 10.0f));
 
+        //Reto A Practica 0
+        Vector3D u(3, 1, 0);
+        Vector3D v(3, 4, 0);
+
+		Vector3D w = u.cross(v);
+
+		u=u.normalize();
+		v=v.normalize();
+		w=w.normalize();
+        
+		u = u * 5.0f;
+		v = v * 5.0f;
+		w = w * 5.0f;
+
+		miParticula = new Particle(1.0f, Vector3D(0.0f, 30.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, -9.81f, 0.0f), 0.25f);
+
+        miParticula->addForce({ 0.0f, 20.0f, 0.0f });
+
+
         // Se registra el RenderItem exactamente como en la plantilla original
-            m_originDot_renderItem = new RenderItem(dot, &m_originDot_transform, Vector4(1.0f, 1.0f, 1.0f, 1.0f)); // Blanco
-		    m_xDot_renderItem = new RenderItem(dot, &m_xDot_transform, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
-		    m_yDot_renderItem = new RenderItem(dot, &m_yDot_transform, Vector4(0.0f, 1.0f, 0.0f, 1.0f));
-		    m_zDot_renderItem = new RenderItem(dot, &m_zDot_transform, Vector4(0.0f, 0.0f, 1.0f, 1.0f));
+        m_originDot_renderItem = new RenderItem(dot, &m_originDot_transform, Vector4(1.0f, 1.0f, 1.0f, 1.0f)); // Blanco
+		m_xDot_renderItem = new RenderItem(dot, &m_xDot_transform, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
+		m_yDot_renderItem = new RenderItem(dot, &m_yDot_transform, Vector4(0.0f, 1.0f, 0.0f, 1.0f));
+		m_zDot_renderItem = new RenderItem(dot, &m_zDot_transform, Vector4(0.0f, 0.0f, 1.0f, 1.0f));
     }
 
     void update(double dt) override {
         // Lógica/Integración del alumno (por ejemplo, movimiento simple)
         //m_transform.p.y -= static_cast<float>(9.8 * dt);
+        miParticula->integrate(dt);
     }
 
     void keyPress(unsigned char key, const physx::PxTransform& camera) override {
@@ -50,6 +72,7 @@ public:
             m_zDot_renderItem->release(); // Deregistra y destruye el item
             m_zDot_renderItem = nullptr;
         }
+        if (miParticula) miParticula->cleanup();
     }
 
 private:
@@ -62,4 +85,6 @@ private:
 	RenderItem* m_xDot_renderItem{ nullptr };
 	RenderItem* m_yDot_renderItem{ nullptr };
 	RenderItem* m_zDot_renderItem{ nullptr };
+
+    Particle* miParticula = nullptr;
 };
