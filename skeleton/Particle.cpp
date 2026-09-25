@@ -1,4 +1,5 @@
 #include "Particle.h"
+#include <cmath>
 
 Particle::Particle(float Mass,Vector3D Pos, Vector3D Vel, Vector3D Acc, Vector3D Gravity, float Damping) :
     massInverse(Mass > 0.0f ? 1.0f / Mass : 0.0f),
@@ -22,8 +23,8 @@ void Particle::integrate(double t)
 {
     //Actualiza la particula utilizando la integración de Euler
     //Velocidad constante
-    acc = acc + gravity + force * massInverse; // force: sumatorio de fuerzas en este tick
-    vel += (acc * t) * damping; // ? : Por que se aplica damping aqui en vez de aplicarlo justo arriba.
+    acc = acc + gravity + force * massInverse ; // force: sumatorio de fuerzas en este tick
+    vel += (acc * t) * std::pow(damping, t); // ? : Por que se aplica damping aqui en vez de aplicarlo justo arriba.
     pose.p += physx::PxVec3(vel) * t; // ? : por que se vuelve a aplicar deltaTime.
 
 	force = Vector3D(0.0f, 0.0f, 0.0f); // Reiniciar el sumatorio de fuerzas

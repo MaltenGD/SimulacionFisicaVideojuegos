@@ -1,13 +1,15 @@
 #pragma once
-#include "Practica0Axes.h"
+
 #include "Scene.h"
 #include "RenderUtils.hpp"
 #include <vector>
 #include "Vector3D.h"
+#include "Particle.h"
+#include "Practica0Axes.h"
 
-class Practica0Scene : public Scene {
+class Practica1Scene : public Scene {
 public:
-    explicit Practica0Scene(std::string name);
+    explicit Practica1Scene(std::string name);
 
     void init() override;
 
@@ -18,5 +20,6 @@ public:
     void cleanup() override;
 
 private:
-    Practica0Axes* m_axes{ nullptr };
+    Practica0Axes* m_axes = nullptr;
+    Particle* miParticula = nullptr;
 };
