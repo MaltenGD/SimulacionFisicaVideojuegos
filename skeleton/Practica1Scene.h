@@ -5,6 +5,7 @@
 #include <vector>
 #include "Vector3D.h"
 #include "Particle.h"
+#include "Projectile.h"
 #include "Practica0Axes.h"
 
 class Practica1Scene : public Scene {
@@ -22,4 +23,5 @@ public:
 private:
     Practica0Axes* m_axes = nullptr;
     Particle* miParticula = nullptr;
+	Projectile* miProyectil = nullptr;
 };

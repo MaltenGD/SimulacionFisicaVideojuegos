@@ -19,7 +19,12 @@ Particle::~Particle()
 	cleanup();
 }
 
-void Particle::integrate(double t)
+void Particle::integrate_Direct(double t)
+{
+
+}
+
+void Particle::integrate_Semi_Implicit(double t)
 {
     //Actualiza la particula utilizando la integración de Euler
     //Velocidad constante

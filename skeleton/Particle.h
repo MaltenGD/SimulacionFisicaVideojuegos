@@ -10,9 +10,10 @@ public:
     Particle(float Mass,Vector3D Pos, Vector3D Vel, Vector3D Acc, Vector3D Gravity = { 0.0f, -9.81f, 0.0f }, float Damping=1);
     ~Particle();
 
-    void integrate(double t);
+    void integrate_Direct(double t);
+    void integrate_Semi_Implicit(double t);
     void cleanup();
-    virtual bool isAlive() const { return true; };
+    virtual bool isAlive() const { return pose.p.y > -100.0f; };
     void addForce(Vector3D Force);
     Vector3D getForce();
 
