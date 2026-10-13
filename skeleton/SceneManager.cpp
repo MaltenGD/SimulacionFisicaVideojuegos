@@ -45,7 +45,7 @@ void SceneManager::update(double dt) {
 
 // Reenvía eventos de teclado a la escena actual. Mantener este método simple
 // permite centralizar atajos globales si se desea en el futuro.
-void SceneManager::keyPress(unsigned char key, const physx::PxTransform& cameraTransform) {
+void SceneManager::keyPress(unsigned char key, Camera* camera) {
     // Teclas globales de navegación entre prácticas
     if (key == 'V' || key == 'v') {
         changeScene("Empty");
@@ -59,9 +59,13 @@ void SceneManager::keyPress(unsigned char key, const physx::PxTransform& cameraT
         changeScene("Practica1");
         return; // Consumimos el evento para que no interfiera con la escena
     }
+    if (key == '2') {
+        changeScene("Practica2");
+        return; // Consumimos el evento para que no interfiera con la escena
+    }
 
     // Si no es una tecla de navegación global, se la pasamos a la escena activa
     if (m_currentScene != nullptr) {
-        m_currentScene->keyPress(key, cameraTransform);
+        m_currentScene->keyPress(key, camera);
     }
 }

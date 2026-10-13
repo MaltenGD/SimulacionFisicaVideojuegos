@@ -12,7 +12,7 @@ public:
 
     void update(double dt) override;
 
-    void keyPress(unsigned char key, const physx::PxTransform& camera) override;
+    void keyPress(unsigned char key, Camera* camera) override;
 
     void cleanup() override;
 

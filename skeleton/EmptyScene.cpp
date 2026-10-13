@@ -14,7 +14,7 @@ void EmptyScene::update(double dt)
 {
 }
 
-void EmptyScene::keyPress(unsigned char key, const physx::PxTransform& camera)
+void EmptyScene::keyPress(unsigned char key, Camera* camera)
 {
 	if (key == 'r' || key == 'R') {
 		m_transform.p = physx::PxVec3(0.0f, 10.0f, 0.0f); // Reset

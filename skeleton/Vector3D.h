@@ -35,6 +35,8 @@ public:
 		return x * v.x + y * v.y + z * v.z;
 	}
 
+	static Vector3D zero() { return { 0,0,0 }; }
+
 	// Producto vectorial
 	Vector3D cross(const Vector3D& v) const {
 		return {
@@ -68,7 +70,41 @@ public:
 		return *this;
 	}
 
-	// Sobrecarga de operadores básicos: +, -, * (por un escalar), +=
+	Vector3D& operator-=(const Vector3D& v) {
+		x -= v.x;
+		y -= v.y;
+		z -= v.z;
+		return *this;
+	}
+
+	Vector3D operator-() const {
+		return { -x, -y, -z };
+	}
+
+	Vector3D operator/(const float scalar) const {
+		if (scalar != 0.0f) {
+			return { x / scalar, y / scalar, z / scalar };
+		}
+		return { 0.0f, 0.0f, 0.0f };
+	}
+
+	Vector3D& operator*=(const float scalar) {
+		x *= scalar;
+		y *= scalar;
+		z *= scalar;
+		return *this;
+	}
+
+	Vector3D& operator/=(const float scalar) {
+		if (scalar != 0.0f) {
+			x /= scalar;
+			y /= scalar;
+			z /= scalar;
+		}
+		return *this;
+	}
+
+	// Sobrecarga de operadores con physx::PxVec3
 	Vector3D operator+(const physx::PxVec3& v) const {
 		return { x + v.x, y + v.y, z + v.z};
 	}
@@ -81,6 +117,13 @@ public:
 		x += v.x;
 		y += v.y;
 		z += v.z;
+		return *this;
+	}
+
+	Vector3D& operator-=(const physx::PxVec3& v) {
+		x -= v.x;
+		y -= v.y;
+		z -= v.z;
 		return *this;
 	}
 

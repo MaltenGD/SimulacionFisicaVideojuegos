@@ -34,7 +34,7 @@ public:
     void update(double dt);
 
     // Reenvía eventos de teclado a la escena actual.
-    void keyPress(unsigned char key, const physx::PxTransform& cameraTransform);
+    void keyPress(unsigned char key, Camera* camera);
 
     // Devuelve un puntero a la escena actual (no toma propiedad).
     [[nodiscard]] Scene* getCurrentScene() const { return m_currentScene.get(); }

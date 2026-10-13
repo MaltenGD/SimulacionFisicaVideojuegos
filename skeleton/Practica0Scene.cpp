@@ -1,6 +1,13 @@
 #include "Practica0Scene.h"
+#include "Practica0Axes.h"
+#include "Vector3D.h"
 
 Practica0Scene::Practica0Scene(std::string name) : Scene(std::move(name)) {}
+
+Practica0Scene::~Practica0Scene()
+{
+	cleanup();
+}
 
 void Practica0Scene::init()
 {
@@ -25,17 +32,13 @@ void Practica0Scene::update(double dt)
 {
 }
 
-void Practica0Scene::keyPress(unsigned char key, const physx::PxTransform& camera)
-{
-	//if (key == 'r' || key == 'R') {
-	//    m_originDot_transform.p = physx::PxVec3(0.0f, 10.0f, 0.0f); // Reset
-	//}
-}
 
 void Practica0Scene::cleanup()
 {
 	if (m_axes) {
 		m_axes->cleanup();
+		delete m_axes;
 		m_axes = nullptr;
 	}
 }
+

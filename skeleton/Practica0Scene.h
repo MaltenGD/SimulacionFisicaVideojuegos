@@ -1,22 +1,18 @@
 #pragma once
-#include "Practica0Axes.h"
+
 #include "Scene.h"
-#include "RenderUtils.hpp"
-#include <vector>
-#include "Vector3D.h"
+
+class Practica0Axes;
 
 class Practica0Scene : public Scene {
 public:
     explicit Practica0Scene(std::string name);
+    virtual ~Practica0Scene() override;
 
     void init() override;
-
     void update(double dt) override;
-
-    void keyPress(unsigned char key, const physx::PxTransform& camera) override;
-
     void cleanup() override;
 
-private:
+protected:
     Practica0Axes* m_axes{ nullptr };
 };

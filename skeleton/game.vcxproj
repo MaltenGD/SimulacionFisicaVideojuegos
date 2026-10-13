@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="packages\NVIDIA.PhysX.4.1.229882250\build\native\NVIDIA.PhysX.props" Condition="Exists('packages\NVIDIA.PhysX.4.1.229882250\build\native\NVIDIA.PhysX.props')" />
   <Import Project="packages\freeglut.3.0.0.v140.1.0.2\build\freeglut.3.0.0.v140.props" Condition="Exists('packages\freeglut.3.0.0.v140.1.0.2\build\freeglut.3.0.0.v140.props')" />
@@ -263,34 +263,46 @@
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="EmptyScene.cpp" />
+    <ClCompile Include="FireParticleGenerator.cpp" />
+    <ClCompile Include="FountainParticleGenerator.cpp" />
+    <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Practica0Axes.cpp" />
     <ClCompile Include="Practica0Scene.cpp" />
     <ClCompile Include="Practica1Scene.cpp" />
+    <ClCompile Include="Practica2Scene.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SistemaParticulas.cpp" />
     <ClCompile Include="Vector3D.cpp" />
+    <ClCompile Include="Vector3DDistribution.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="EmptyScene.h" />
+    <ClInclude Include="FireParticleGenerator.h" />
+    <ClInclude Include="FountainParticleGenerator.h" />
+    <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="Particle.h" />
     <ClInclude Include="Practica0Axes.h" />
     <ClInclude Include="Practica0Scene.h" />
     <ClInclude Include="Practica1Scene.h" />
+    <ClInclude Include="Practica2Scene.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SistemaParticulas.h" />
     <ClInclude Include="Vector3D.h" />
+    <ClInclude Include="Vector3DDistribution.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

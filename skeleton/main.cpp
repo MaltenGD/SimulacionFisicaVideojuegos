@@ -1,4 +1,4 @@
-﻿#if defined(_DEBUG) && defined(NDEBUG)
+#if defined(_DEBUG) && defined(NDEBUG)
 #pragma message("⚠️ ¡ALERTA! Ambas macros (_DEBUG y NDEBUG) están definidas a la vez.")
 #elif defined(_DEBUG)
 #pragma message("ℹ️ Solo _DEBUG está definida.")
@@ -23,6 +23,7 @@
 #include "EmptyScene.h"
 #include "Practica0Scene.h"
 #include "Practica1Scene.h"
+#include "Practica2Scene.h"
 
 #include <foundation/PxSimpleTypes.h>
 #include <PxPhysicsVersion.h> // <- Macros for PhysX version checking
@@ -101,9 +102,10 @@ void initPhysics(bool interactive)
 	SceneManager::instance().registerScene<EmptyScene>("Empty");
 	SceneManager::instance().registerScene<Practica0Scene>("Practica0");
 	SceneManager::instance().registerScene<Practica1Scene>("Practica1");
+	SceneManager::instance().registerScene<Practica2Scene>("Practica2");
 
 	// Cargar la escena inicial
-	SceneManager::instance().changeScene("Empty");
+	SceneManager::instance().changeScene("Practica1");
 	
 }
 
@@ -182,7 +184,7 @@ void cleanupPhysics(bool interactive)
 }
 
 // Function called when a key is pressed
-void keyPress(unsigned char key, const PxTransform& camera)
+void keyPress(unsigned char key, Camera* camera)
 {
 	PX_UNUSED(camera);
 
