@@ -2,7 +2,6 @@
 
 #include "Vector3D.h"
 #include "RenderUtils.hpp"
-#include <vector>
 
 class Particle
 {
@@ -25,10 +24,6 @@ public:
 
     void setMaxLifetime(float maxLife) { maxLifetime = maxLife; }
     float getMaxLifetime() const { return maxLifetime; }
-
-    // Para el generador de fuegos artificiales
-    // TODO: Hacer generador de fuegos artifiiales
-    virtual std::vector<Particle*> explode() { return {}; }
 
 protected:
     float massInverse;

@@ -7,26 +7,12 @@
 
 class Particle;
 
-//// Representa 
-//struct ParticleModel // TODO: BORRAR SI NO ES OBLIGATORIO IMPLEMENTARLO ASI
-//{
-//	Vector3D pos = Vector3D::zero();
-//	Vector3D vel = Vector3D::zero();
-//	Vector3D acc = Vector3D::zero();
-//	Vector3D gravity = Vector3D(0.0f, -10.0f, 0.0f);
-//	Vector4 color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
-//	float mass = 1.0f;
-//	float damping = 0.99f;
-//	float radius = 0.3f;
-//	float maxLifetime = 5.0f;
-//};
-
 class ParticleGenerator
 {
 protected:
 	std::string m_name;
 	Vector3D m_origin = Vector3D::zero();
-	Vector3D m_gravity = Vector3D(0.0f, -10.0f, 0.0f); // Gravedad -10.0 en Y
+	Vector3D m_gravity = Vector3D(0.0f, -10.0f, 0.0f);
 	Vector4 m_color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	float m_radius = 0.3f;
 	float m_mass = 1.0f;
@@ -34,7 +20,7 @@ protected:
 	float m_lifetime = 5.0f;
 
 	int m_particlesPerSpawn = 2;
-	double m_spawnInterval = 0.05; // Segundos entre emisiones
+	double m_spawnInterval = 0.05;
 	double m_timeSinceLastSpawn = 0.0;
 	bool m_active = true;
 
@@ -42,13 +28,9 @@ public:
 	ParticleGenerator(std::string name, Vector3D origin, int particlesPerSpawn = 2, double spawnInterval = 0.05);
 	virtual ~ParticleGenerator() = default;
 
-	// Actualiza el temporizador y devuelve las partículas a emitir en este frame
 	virtual std::vector<Particle*> updateAndGenerate(double dt);
-
-	// Método fábrica puro para instanciar una partícula según la lógica del emisor
 	virtual Particle* generateSingleParticle() = 0;
 
-	// Getters y Setters
 	const std::string& getName() const { return m_name; }
 	void setOrigin(const Vector3D& pos) { m_origin = pos; }
 	Vector3D getOrigin() const { return m_origin; }

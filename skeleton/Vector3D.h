@@ -7,16 +7,13 @@ class Vector3D
 public:
 	float x, y, z;
 
-	// Constructores: por defecto (0,0,0), por parámetros (x,y,z) y de conversión desde physx::PxVec3
 	Vector3D() : x(0.0f), y(0.0f), z(0.0f) {}
 	Vector3D(const float x, const float y, const float z) : x(x), y(y), z(z) {}
 	Vector3D(const physx::PxVec3& v) : x(v.x), y(v.y), z(v.z) {}
 
-	// Constructor de copia y asignación
 	Vector3D(const Vector3D& v) = default;
 	Vector3D& operator=(const Vector3D& v) = default;
 
-	// Módulo y Normalización
 	float magnitude() const {
 		return std::sqrt(x * x + y * y + z * z);
 	}
@@ -29,15 +26,12 @@ public:
 		return { 0.0f, 0.0f, 0.0f };
 	}
 
-	// Operaciones algebraicas:
-	// Producto escalar
 	float dot(const Vector3D& v) const {
 		return x * v.x + y * v.y + z * v.z;
 	}
 
 	static Vector3D zero() { return { 0,0,0 }; }
 
-	// Producto vectorial
 	Vector3D cross(const Vector3D& v) const {
 		return {
 			(y * v.z) - (z * v.y),
@@ -46,7 +40,6 @@ public:
 		};
 	}
 
-	// Sobrecarga de operadores básicos: +, -, * (por un escalar), +=
 	Vector3D operator+(const Vector3D& v) const {
 		return { x + v.x, y + v.y, z + v.z };
 	}
@@ -104,7 +97,6 @@ public:
 		return *this;
 	}
 
-	// Sobrecarga de operadores con physx::PxVec3
 	Vector3D operator+(const physx::PxVec3& v) const {
 		return { x + v.x, y + v.y, z + v.z};
 	}
@@ -127,11 +119,7 @@ public:
 		return *this;
 	}
 
-
-
-	// Wrapper de conversión con PhysX: Operador de conversión
 	operator physx::PxVec3() const {
 		return physx::PxVec3(x, y, z);
 	}
 };
-
