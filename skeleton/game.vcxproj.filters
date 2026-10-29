@@ -24,6 +24,7 @@
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="FountainParticleGenerator.cpp" />
     <ClCompile Include="FireParticleGenerator.cpp" />
+    <ClCompile Include="FogParticleGenerator.cpp" />
     <ClCompile Include="Vector3DDistribution.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +51,7 @@
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="FountainParticleGenerator.h" />
     <ClInclude Include="FireParticleGenerator.h" />
+    <ClInclude Include="FogParticleGenerator.h" />
     <ClInclude Include="Vector3DDistribution.h" />
   </ItemGroup>
   <ItemGroup>

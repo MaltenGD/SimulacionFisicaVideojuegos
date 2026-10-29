@@ -1,12 +1,12 @@
 #pragma once
 
-#include "Practica0Scene.h"
+#include "Scene.h"
 #include "SistemaParticulas.h"
 #include "RenderUtils.hpp"
 
 class ParticleGenerator;
 
-class Practica2Scene : public Practica0Scene
+class Practica2Scene : public Scene
 {
 public:
 	explicit Practica2Scene(std::string name);
@@ -23,6 +23,7 @@ private:
 	SistemaParticulas m_sistema;
 
 	ParticleGenerator* m_fountain = nullptr;
+	ParticleGenerator* m_fog = nullptr;
 	ParticleGenerator* m_fire = nullptr;
 
 	RenderItem* m_floorRenderItem = nullptr;

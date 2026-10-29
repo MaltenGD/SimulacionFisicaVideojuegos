@@ -264,6 +264,7 @@
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="EmptyScene.cpp" />
     <ClCompile Include="FireParticleGenerator.cpp" />
+    <ClCompile Include="FogParticleGenerator.cpp" />
     <ClCompile Include="FountainParticleGenerator.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="main.cpp" />
@@ -287,6 +288,7 @@
     <ClInclude Include="core.hpp" />
     <ClInclude Include="EmptyScene.h" />
     <ClInclude Include="FireParticleGenerator.h" />
+    <ClInclude Include="FogParticleGenerator.h" />
     <ClInclude Include="FountainParticleGenerator.h" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="Particle.h" />
