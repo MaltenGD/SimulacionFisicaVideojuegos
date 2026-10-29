@@ -1,4 +1,5 @@
 #include "Practica1Scene.h"
+#include "OldParticle.h"
 #include <iostream>
 #include <iomanip>
 
@@ -82,7 +83,7 @@ void Practica1Scene::init()
 	Practica0Scene::init();
 	initConfigs();
 	// Partícula de la parte 1 con velocidad constante , aceleración y damping
-	Particle* ParticulaApt1 = new Particle(1.0f, Vector3D(0.0f, 25.0f, 0.0f), Vector3D(5.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, -9.81f, 0.0f), 0.98f, 0.8f, Vector4(0.2f, 0.8f, 0.2f, 1.0f));
+	Particle* ParticulaApt1 = new OldParticle(1.0f, Vector3D(0.0f, 25.0f, 0.0f), Vector3D(5.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, -9.81f, 0.0f), 0.98f, 0.8f, Vector4(0.2f, 0.8f, 0.2f, 1.0f));
 	m_Particulas.push_back(ParticulaApt1);
 
 
@@ -159,7 +160,7 @@ void Practica1Scene::keyPress(unsigned char key, Camera* camera)
 			delete p;
 		}
 		m_Particulas.clear();
-		m_Particulas.push_back(new Particle(1.0f, Vector3D(0.0f, 25.0f, 0.0f), Vector3D(5.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, -9.81f, 0.0f), 0.98f, 0.8f, Vector4(0.2f, 0.8f, 0.2f, 1.0f)));
+		m_Particulas.push_back(new OldParticle(1.0f, Vector3D(0.0f, 25.0f, 0.0f), Vector3D(5.0f, 0.0f, 0.0f), Vector3D(0.0f, 0.0f, 0.0f), Vector3D(0.0f, -9.81f, 0.0f), 0.98f, 0.8f, Vector4(0.2f, 0.8f, 0.2f, 1.0f)));
 		break;
 	default:
 		break;

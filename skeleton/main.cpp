@@ -21,9 +21,10 @@
 #include <iostream>
 #include "SceneManager.h"
 #include "EmptyScene.h"
-#include "Practica0Scene.h"
-#include "Practica1Scene.h"
+//#include "Practica0Scene.h"
+//#include "Practica1Scene.h"
 #include "Practica2Scene.h"
+#include "Practica3Scene.h"
 
 #include <foundation/PxSimpleTypes.h>
 #include <PxPhysicsVersion.h> // <- Macros for PhysX version checking
@@ -100,12 +101,13 @@ void initPhysics(bool interactive)
 	gScene = gPhysics->createScene(sceneDesc);
 	// Registrar las prácticas/escenas del curso
 	SceneManager::instance().registerScene<EmptyScene>("Empty");
-	SceneManager::instance().registerScene<Practica0Scene>("Practica0");
-	SceneManager::instance().registerScene<Practica1Scene>("Practica1");
+	//SceneManager::instance().registerScene<Practica0Scene>("Practica0");
+	//SceneManager::instance().registerScene<Practica1Scene>("Practica1");
 	SceneManager::instance().registerScene<Practica2Scene>("Practica2");
+	SceneManager::instance().registerScene<Practica3Scene>("Practica3");
 
 	// Cargar la escena inicial
-	SceneManager::instance().changeScene("Practica1");
+	SceneManager::instance().changeScene("Practica2");
 	
 }
 

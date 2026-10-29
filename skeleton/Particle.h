@@ -8,9 +8,9 @@ class Particle
 {
 public:
     Particle(float Mass, Vector3D Pos, Vector3D Vel, Vector3D Acc,
-             Vector3D Gravity = { 0.0f, -9.81f, 0.0f }, float Damping = 1.0f,
+             float Damping = 1.0f,
              float radius = 1.0f, Vector4 color = Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-             float maxLife = 15.0f);
+             float maxLife = 15.0f); // fixedGravity solo se usa para la practica 2
     virtual ~Particle();
 
     void integrate_Direct(double t);
@@ -20,14 +20,16 @@ public:
     void addForce(Vector3D Force);
     Vector3D getForce();
 
+    float getMass() const { return massInverse > 0.0f ? 1.0f / massInverse : 0.0f; }
+    float getMassInverse() const { return massInverse; }
+    void setMass(float mass) { massInverse = (mass > 0.0f ? 1.0f / mass : 0.0f); }
+
     Vector3D getPosition() const { return pose.p; }
     Vector3D getVelocity() const { return vel; }
 
     void setMaxLifetime(float maxLife) { maxLifetime = maxLife; }
     float getMaxLifetime() const { return maxLifetime; }
 
-    // Para el generador de fuegos artificiales
-    // TODO: Hacer generador de fuegos artifiiales
     virtual std::vector<Particle*> explode() { return {}; }
 
 protected:
@@ -36,9 +38,9 @@ protected:
     RenderItem* renderItem;
     Vector3D vel;
     Vector3D acc;
-    Vector3D gravity;
     Vector3D force;
     float damping;
     float lifetime{ 0.0f };
     float maxLifetime{ 15.0f };
+    Vector3D m_fixedGravity;
 };

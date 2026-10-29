@@ -1,6 +1,7 @@
 #include "Practica2Scene.h"
 #include "FountainParticleGenerator.h"
 #include "FireParticleGenerator.h"
+#include "GravityForceGenerator.h"
 #include <iostream>
 
 Practica2Scene::Practica2Scene(std::string name)
@@ -21,18 +22,14 @@ void Practica2Scene::initEffects()
 	auto gen1 = std::make_unique<FountainParticleGenerator>(
 		Vector3D(0.0f, 0.0f, 0.0f),
 		Vector3D(0.0f, 15.0f, 0.0f),
-		Vector3D(2.5f, 2.0f, 2.5f)
+		Vector3D(2.5f, 2.0f, 2.5f), Vector3D(0.0f, -9.8f, 0.0f) // tiene fixedGravity.
 	);
 	m_fountain = m_sistema.addGenerator(std::move(gen1));
 
-
-	
 	auto gen2 = std::make_unique<FireParticleGenerator>(
 		Vector3D(15.0f, 0.0f, 0.0f)
 	);
 	m_fire = m_sistema.addGenerator(std::move(gen2));
-	
-
 }
 
 
@@ -47,7 +44,6 @@ void Practica2Scene::init()
 		&m_floorPose,
 		Vector4(0.28f, 0.38f, 0.28f, 1.0f)
 	);
-
 }
 
 void Practica2Scene::update(double dt)
@@ -65,7 +61,7 @@ void Practica2Scene::keyPress(unsigned char key, Camera* camera)
 		if (m_fountain)
 		{
 			m_fountain->toggleActive();
-			std::cout << "[Fuente de Agua] " << (m_fountain->isActive() ? "ACTIVADA" : "DESACTIVADA") << "\n";
+			std::cout << "Fuente de Agua " << (m_fountain->isActive() ? "ACTIVADA" : "DESACTIVADA") << "\n";
 		}
 		break;
 
@@ -73,18 +69,18 @@ void Practica2Scene::keyPress(unsigned char key, Camera* camera)
 		if (m_fire)
 		{
 			m_fire->toggleActive();
-			std::cout << "[Chispas de Fuego] " << (m_fire->isActive() ? "ACTIVADO" : "DESACTIVADO") << "\n";
+			std::cout << "Chispas de Fuego " << (m_fire->isActive() ? "ACTIVADO" : "DESACTIVADO") << "\n";
 		}
 		break;
 
 	case 'C': // Limpiar partículas
 		m_sistema.clearParticles();
-		std::cout << "[Limpieza] Todas las particulas vivas han sido eliminadas.\n";
+		std::cout << "Todas las particulas vivas han sido eliminadas.\n";
 		break;
 
 	case 'R': // Reiniciar
 		initEffects();
-		std::cout << "[Reset] Generadores y particulas reiniciados.\n";
+		std::cout << "Generadores y particulas reiniciados.\n";
 		break;
 
 	default:
@@ -97,7 +93,6 @@ void Practica2Scene::cleanup()
 	m_sistema.cleanup();
 	m_fountain = nullptr;
 	m_fire = nullptr;
-
 
 	if (m_floorRenderItem)
 	{

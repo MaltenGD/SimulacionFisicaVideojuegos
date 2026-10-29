@@ -262,16 +262,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
+    <ClCompile Include="Distribution.cpp" />
     <ClCompile Include="EmptyScene.cpp" />
     <ClCompile Include="FireParticleGenerator.cpp" />
+    <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="FountainParticleGenerator.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="Practica0Axes.cpp" />
-    <ClCompile Include="Practica0Scene.cpp" />
+    <ClCompile Include="OldParticle.cpp" />
+    <ClCompile Include="PositionalForceGenerator.cpp" />
     <ClCompile Include="Practica1Scene.cpp" />
     <ClCompile Include="Practica2Scene.cpp" />
+    <ClCompile Include="Practica0Axes.cpp" />
+    <ClCompile Include="Practica0Scene.cpp" />
     <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
@@ -281,18 +285,24 @@
     <ClCompile Include="SistemaParticulas.cpp" />
     <ClCompile Include="Vector3D.cpp" />
     <ClCompile Include="Vector3DDistribution.cpp" />
+    <ClCompile Include="GravityForceGenerator.cpp" />
+    <ClCompile Include="Practica3Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="core.hpp" />
+    <ClInclude Include="Distribution.h" />
     <ClInclude Include="EmptyScene.h" />
     <ClInclude Include="FireParticleGenerator.h" />
+    <ClInclude Include="ForceGenerator.h" />
     <ClInclude Include="FountainParticleGenerator.h" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="OldParticle.h" />
+    <ClInclude Include="PositionalForceGenerator.h" />
+    <ClInclude Include="Practica1Scene.h" />
     <ClInclude Include="Practica0Axes.h" />
     <ClInclude Include="Practica0Scene.h" />
-    <ClInclude Include="Practica1Scene.h" />
     <ClInclude Include="Practica2Scene.h" />
     <ClInclude Include="Projectile.h" />
     <ClInclude Include="RenderUtils.hpp" />
@@ -303,6 +313,8 @@
     <ClInclude Include="SistemaParticulas.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="Vector3DDistribution.h" />
+    <ClInclude Include="GravityForceGenerator.h" />
+    <ClInclude Include="Practica3Scene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

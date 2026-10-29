@@ -1,6 +1,7 @@
 #include "SistemaParticulas.h"
 #include "Particle.h"
 #include "ParticleGenerator.h"
+#include "ForceGenerator.h"
 #include <algorithm>
 #include <cmath>
 
@@ -18,6 +19,20 @@ ParticleGenerator* SistemaParticulas::addGenerator(std::unique_ptr<ParticleGener
 {
 	m_generators.push_back(std::move(generator));
 	return m_generators.back().get();
+}
+
+ForceGenerator* SistemaParticulas::addForceGenerator(std::unique_ptr<ForceGenerator> generator)
+{
+	m_forceGenerators.push_back(std::move(generator));
+	return m_forceGenerators.back().get();
+}
+
+void SistemaParticulas::addForceGenerator(ForceGenerator* generator)
+{
+	if (generator)
+	{
+		m_externalForceGenerators.push_back(generator);
+	}
 }
 
 void SistemaParticulas::addParticle(Particle* p)
@@ -47,8 +62,20 @@ void SistemaParticulas::update(double dt)
 		}
 	}
 
-	// Se integran todas las partículas vivas y  se destruyen las que cumplan su condición de muerte
+	// Se aplican las fuerzas de todos los generadores de fuerza a las partículas vivas
+	for (Particle* p : m_particles)
+	{
+		for (auto& fg : m_forceGenerators)
+		{
+			fg->applyForces(p);
+		}
+		for (ForceGenerator* fg : m_externalForceGenerators)
+		{
+			fg->applyForces(p);
+		}
+	}
 
+	// Se integran todas las partículas vivas y se destruyen las que cumplan su condición de muerte
 	for (auto it = m_particles.begin(); it != m_particles.end(); )
 	{
 		Particle* p = *it;
@@ -81,4 +108,6 @@ void SistemaParticulas::cleanup()
 {
 	clearParticles();
 	m_generators.clear();
+	m_forceGenerators.clear();
+	m_externalForceGenerators.clear();
 }

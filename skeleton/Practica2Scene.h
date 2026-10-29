@@ -5,6 +5,7 @@
 #include "RenderUtils.hpp"
 
 class ParticleGenerator;
+class GravityForceGenerator;
 
 class Practica2Scene : public Practica0Scene
 {

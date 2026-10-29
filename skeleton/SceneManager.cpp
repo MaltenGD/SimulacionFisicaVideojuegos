@@ -51,18 +51,22 @@ void SceneManager::keyPress(unsigned char key, Camera* camera) {
         changeScene("Empty");
         return; // Consumimos el evento para que no interfiera con la escena
     }
-    if (key == '0') {
-        changeScene("Practica0");
-        return; // Consumimos el evento para que no interfiera con la escena
-    }
-    if (key == '1') {
-        changeScene("Practica1");
-        return; // Consumimos el evento para que no interfiera con la escena
-    }
+    //if (key == '0') {
+    //    changeScene("Practica0");
+    //    return; // Consumimos el evento para que no interfiera con la escena
+    //}
+    //if (key == '1') {
+    //    changeScene("Practica1");
+    //    return; // Consumimos el evento para que no interfiera con la escena
+    //}
     if (key == '2') {
         changeScene("Practica2");
         return; // Consumimos el evento para que no interfiera con la escena
     }
+    //if (key == '3') {
+    //    changeScene("Practica3");
+    //    return; // Consumimos el evento para que no interfiera con la escena
+    //}
 
     // Si no es una tecla de navegación global, se la pasamos a la escena activa
     if (m_currentScene != nullptr) {

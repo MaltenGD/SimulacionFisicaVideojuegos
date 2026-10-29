@@ -1,5 +1,5 @@
 #pragma once
-#include "Particle.h"
+#include "OldParticle.h"
 #include <string>
 
 #include <utility>
@@ -66,7 +66,7 @@ struct ProjectileConfig
     }
 };
 
-class Projectile : public Particle
+class Projectile : public OldParticle
 {
 public:
     Projectile(float Mass, Vector3D Pos, Vector3D Vel, Vector3D Acc,
