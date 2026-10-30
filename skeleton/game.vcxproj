@@ -270,13 +270,9 @@
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="OldParticle.cpp" />
     <ClCompile Include="PositionalForceGenerator.cpp" />
-    <ClCompile Include="Practica1Scene.cpp" />
-    <ClCompile Include="Practica2Scene.cpp" />
     <ClCompile Include="Practica0Axes.cpp" />
     <ClCompile Include="Practica0Scene.cpp" />
-    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
@@ -287,6 +283,9 @@
     <ClCompile Include="Vector3DDistribution.cpp" />
     <ClCompile Include="GravityForceGenerator.cpp" />
     <ClCompile Include="Practica3Scene.cpp" />
+    <ClCompile Include="WindForceGenerator.cpp" />
+    <ClCompile Include="WhirlwindForceGenerator.cpp" />
+    <ClCompile Include="ExplosionForceGenerator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="callbacks.hpp" />
@@ -298,13 +297,9 @@
     <ClInclude Include="FountainParticleGenerator.h" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="Particle.h" />
-    <ClInclude Include="OldParticle.h" />
     <ClInclude Include="PositionalForceGenerator.h" />
-    <ClInclude Include="Practica1Scene.h" />
     <ClInclude Include="Practica0Axes.h" />
     <ClInclude Include="Practica0Scene.h" />
-    <ClInclude Include="Practica2Scene.h" />
-    <ClInclude Include="Projectile.h" />
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
@@ -315,6 +310,9 @@
     <ClInclude Include="Vector3DDistribution.h" />
     <ClInclude Include="GravityForceGenerator.h" />
     <ClInclude Include="Practica3Scene.h" />
+    <ClInclude Include="WindForceGenerator.h" />
+    <ClInclude Include="WhirlwindForceGenerator.h" />
+    <ClInclude Include="ExplosionForceGenerator.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

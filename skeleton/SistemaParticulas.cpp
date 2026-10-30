@@ -2,7 +2,6 @@
 #include "Particle.h"
 #include "ParticleGenerator.h"
 #include "ForceGenerator.h"
-#include <algorithm>
 #include <cmath>
 
 SistemaParticulas::SistemaParticulas(size_t initialReserve)
@@ -46,13 +45,12 @@ void SistemaParticulas::addParticle(Particle* p)
 bool SistemaParticulas::isWithinBounds(const Particle* p) const
 {
 	Vector3D pos = p->getPosition();
-	float horizDist = std::sqrt(pos.x * pos.x + pos.z * pos.z); // Modulo del vector distancia
+	float horizDist = std::sqrt(pos.x * pos.x + pos.z * pos.z);
 	return pos.y > m_lowerYBound && horizDist < m_maxHorizontalDist;
 }
 
 void SistemaParticulas::update(double dt)
 {
-	// Cada generador actualiza y crea nuevas particulas (si les toca)
 	for (auto& gen : m_generators)
 	{
 		std::vector<Particle*> newParticles = gen->updateAndGenerate(dt);
@@ -62,7 +60,15 @@ void SistemaParticulas::update(double dt)
 		}
 	}
 
-	// Se aplican las fuerzas de todos los generadores de fuerza a las partículas vivas
+	for (auto& fg : m_forceGenerators)
+	{
+		fg->update(dt);
+	}
+	for (ForceGenerator* fg : m_externalForceGenerators)
+	{
+		fg->update(dt);
+	}
+
 	for (Particle* p : m_particles)
 	{
 		for (auto& fg : m_forceGenerators)
@@ -75,7 +81,6 @@ void SistemaParticulas::update(double dt)
 		}
 	}
 
-	// Se integran todas las partículas vivas y se destruyen las que cumplan su condición de muerte
 	for (auto it = m_particles.begin(); it != m_particles.end(); )
 	{
 		Particle* p = *it;

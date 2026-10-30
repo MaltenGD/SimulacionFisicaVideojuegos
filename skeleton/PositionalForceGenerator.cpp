@@ -40,7 +40,6 @@ void PositionalForceGenerator::updateRenderItem()
 		physx::PxShape* shape = CreateShape(physx::PxBoxGeometry(m_halfExtents.x, m_halfExtents.y, m_halfExtents.z));
 		if (shape)
 		{
-			// Marcamos la forma como TRIGGER para que se dibuje en modo líneas / wireframe
 			shape->setFlag(physx::PxShapeFlag::eSIMULATION_SHAPE, false);
 			shape->setFlag(physx::PxShapeFlag::eTRIGGER_SHAPE, true);
 			m_renderItem = new RenderItem(shape, &m_pose, m_debugColor);

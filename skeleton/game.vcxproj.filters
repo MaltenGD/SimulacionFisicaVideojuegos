@@ -14,10 +14,7 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Vector3D.cpp" />
     <ClCompile Include="Particle.cpp" />
-    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="EmptyScene.cpp" />
-    <ClCompile Include="Practica1Scene.cpp" />
-    <ClCompile Include="Practica2Scene.cpp" />
     <ClCompile Include="Practica0Axes.cpp" />
     <ClCompile Include="SistemaParticulas.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
@@ -29,6 +26,9 @@
     <ClCompile Include="PositionalForceGenerator.cpp" />
     <ClCompile Include="GravityForceGenerator.cpp" />
     <ClCompile Include="Practica3Scene.cpp" />
+    <ClCompile Include="WindForceGenerator.cpp" />
+    <ClCompile Include="WhirlwindForceGenerator.cpp" />
+    <ClCompile Include="ExplosionForceGenerator.cpp" />
     <ClCompile Include="Practica0Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -46,10 +46,7 @@
     <ClInclude Include="EmptyScene.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="Particle.h" />
-    <ClInclude Include="Projectile.h" />
-    <ClInclude Include="Practica1Scene.h" />
     <ClInclude Include="Practica0Axes.h" />
-    <ClInclude Include="Practica2Scene.h" />
     <ClInclude Include="SistemaParticulas.h" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="FountainParticleGenerator.h" />
@@ -60,6 +57,9 @@
     <ClInclude Include="PositionalForceGenerator.h" />
     <ClInclude Include="GravityForceGenerator.h" />
     <ClInclude Include="Practica3Scene.h" />
+    <ClInclude Include="WindForceGenerator.h" />
+    <ClInclude Include="WhirlwindForceGenerator.h" />
+    <ClInclude Include="ExplosionForceGenerator.h" />
     <ClInclude Include="Practica0Scene.h" />
   </ItemGroup>
   <ItemGroup>

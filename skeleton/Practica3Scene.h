@@ -1,13 +1,16 @@
 #pragma once
 
-#include "Practica0Scene.h"
+#include "Scene.h"
 #include "SistemaParticulas.h"
 #include "RenderUtils.hpp"
 
 class GravityForceGenerator;
+class WindForceGenerator;
+class WhirlwindForceGenerator;
+class ExplosionForceGenerator;
 class ParticleGenerator;
 
-class Practica3Scene : public Practica0Scene
+class Practica3Scene : public Scene
 {
 public:
 	explicit Practica3Scene(std::string name);
@@ -24,12 +27,30 @@ private:
 
 	SistemaParticulas m_sistema;
 
-	GravityForceGenerator* m_gravityZoneEarth = nullptr;
-	GravityForceGenerator* m_gravityZoneBuoyancy = nullptr;
+	// Generador de fuerzas de gravedad terrestre
+	GravityForceGenerator*   m_gravityEarth     = nullptr; 
+	// Generador de fuerza de gravedad invertida (hacia arriba)
+	GravityForceGenerator*   m_gravityBuoyancy  = nullptr;
 
+	// Generador de fuerza de viento
+	WindForceGenerator*      m_windZone         = nullptr;
+	// Generador de gravedad extra para el generador de fuerzas de viento
+	GravityForceGenerator*   m_gravityWind      = nullptr;
+
+
+	// Generador de fuerza de viento
+	WhirlwindForceGenerator* m_whirlwind        = nullptr;
+
+	// Generador de gravedad extra para el generador de fuerzas de torbellino
+	GravityForceGenerator*   m_gravityWhirlwind = nullptr;
+
+	ExplosionForceGenerator* m_explosion        = nullptr;
+
+	// Emisores
 	ParticleGenerator* m_fountainEarth = nullptr;
-	ParticleGenerator* m_fountainFloating = nullptr;
-	ParticleGenerator* m_fountainCenter = nullptr;
+	ParticleGenerator* m_fountainFloat = nullptr;
+	ParticleGenerator* m_fountainWind  = nullptr;
+	ParticleGenerator* m_fountainVortex= nullptr;
 
 	RenderItem* m_floorRenderItem = nullptr;
 	physx::PxTransform m_floorPose{ physx::PxVec3(0.0f, -0.3f, 0.0f) };

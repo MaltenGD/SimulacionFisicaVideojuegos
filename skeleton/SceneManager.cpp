@@ -1,8 +1,6 @@
 #include "SceneManager.h"
 #include <iostream>
 
-// Solicita el cambio de escena. Si el nombre no está registrado, se escribe
-// un error en stderr y la solicitud se ignora.
 void SceneManager::changeScene(const std::string& name) {
     if (m_factories.find(name) == m_factories.end()) {
         std::cerr << "[SceneManager Error] Escena no registrada: " << name << "\n";
@@ -12,8 +10,6 @@ void SceneManager::changeScene(const std::string& name) {
     m_hasPendingChange = true;
 }
 
-// Realiza la transición a la escena pendiente: limpia la escena actual,
-// crea la nueva usando la fábrica y la inicializa.
 void SceneManager::applyPendingSceneChange() {
     if (!m_hasPendingChange) return;
 
@@ -31,8 +27,6 @@ void SceneManager::applyPendingSceneChange() {
     m_pendingSceneName.clear();
 }
 
-// Llamada por frame: aplica el cambio pendiente antes de actualizar la escena
-// para evitar modificar la escena mientras está siendo usada.
 void SceneManager::update(double dt) {
     if (m_hasPendingChange) {
         applyPendingSceneChange();
@@ -43,32 +37,7 @@ void SceneManager::update(double dt) {
     }
 }
 
-// Reenvía eventos de teclado a la escena actual. Mantener este método simple
-// permite centralizar atajos globales si se desea en el futuro.
 void SceneManager::keyPress(unsigned char key, Camera* camera) {
-    // Teclas globales de navegación entre prácticas
-    if (key == 'V' || key == 'v') {
-        changeScene("Empty");
-        return; // Consumimos el evento para que no interfiera con la escena
-    }
-    //if (key == '0') {
-    //    changeScene("Practica0");
-    //    return; // Consumimos el evento para que no interfiera con la escena
-    //}
-    //if (key == '1') {
-    //    changeScene("Practica1");
-    //    return; // Consumimos el evento para que no interfiera con la escena
-    //}
-    if (key == '2') {
-        changeScene("Practica2");
-        return; // Consumimos el evento para que no interfiera con la escena
-    }
-    //if (key == '3') {
-    //    changeScene("Practica3");
-    //    return; // Consumimos el evento para que no interfiera con la escena
-    //}
-
-    // Si no es una tecla de navegación global, se la pasamos a la escena activa
     if (m_currentScene != nullptr) {
         m_currentScene->keyPress(key, camera);
     }

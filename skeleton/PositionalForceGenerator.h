@@ -23,15 +23,12 @@ public:
 	                         const Vector4& debugColor = Vector4(0.0f, 0.8f, 1.0f, 1.0f));
 	virtual ~PositionalForceGenerator() override;
 
-	// Comprueba si una posición está dentro de la caja AABB delimitadora
 	virtual bool isInside(const Vector3D& pos) const;
 
-	// Control de visualización debug del área de efecto (renderiza los límites/aristas de la caja)
 	void setDebug(bool debug);
 	bool isDebug() const { return m_debug; }
 	void toggleDebug();
 
-	// Getters y Setters
 	void setOrigin(const Vector3D& origin);
 	Vector3D getOrigin() const { return m_origin; }
 
