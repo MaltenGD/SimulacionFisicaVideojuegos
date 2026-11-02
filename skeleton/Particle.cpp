@@ -1,70 +1,60 @@
 #include "Particle.h"
 #include <cmath>
 
-Particle::Particle(float Mass, Vector3D Pos, Vector3D Vel, Vector3D Acc, Vector3D Gravity, float Damping, float radius, Vector4 color, float maxLife) :
-    massInverse(Mass > 0.0f ? 1.0f / Mass : 0.0f),
-    pose(physx::PxTransform(Pos)),
-    renderItem(new RenderItem(
-               CreateShape(physx::PxSphereGeometry(radius)),
-                &pose,
-                color)),
-    vel(Vel),
-    acc(Acc),
-    gravity(Gravity),
-    force(0.0f, 0.0f, 0.0f),
-    damping(Damping),
-    lifetime(0.0f),
-    maxLifetime(maxLife)
-{}
+Particle::Particle(float mass, Vector3D pos, Vector3D vel, Vector3D acc,
+                   float damping, float radius, Vector4 color, float maxLife)
+    : massInverse(mass > 0.0f ? 1.0f / mass : 0.0f),
+      pose(physx::PxTransform(pos)),
+      renderItem(new RenderItem(
+          CreateShape(physx::PxSphereGeometry(radius)),
+          &pose,
+          color)),
+      vel(vel),
+      acc(acc),
+      force(0.0f, 0.0f, 0.0f),
+      damping(damping),
+      lifetime(0.0f),
+      maxLifetime(maxLife)
+{
+}
 
 Particle::~Particle()
 {
-	cleanup();
+    cleanup();
 }
 
-void Particle::integrate_Direct(double t)
+void Particle::integrate_Direct(double dt)
 {
-    Vector3D netAcc = acc + gravity + force * massInverse;
-    pose.p += physx::PxVec3(vel) * t;
-    vel += netAcc * t;
+    Vector3D netAcc = acc + force * massInverse;
+    pose.p += physx::PxVec3(vel) * static_cast<float>(dt);
+    vel += netAcc * static_cast<float>(dt);
     if (damping > 0.0f) {
-        vel = vel * std::pow(damping, t);
+        vel = vel * std::pow(damping, static_cast<float>(dt));
     } else {
         vel = Vector3D::zero();
     }
-    force = Vector3D(0.0f, 0.0f, 0.0f);
-    lifetime += t;
+    force = Vector3D::zero();
+    lifetime += static_cast<float>(dt);
 }
 
-void Particle::integrate_Semi_Implicit(double t)
+void Particle::integrate_Semi_Implicit(double dt)
 {
-    // Integración Semi-implícita:
-    Vector3D netAcc = acc + gravity + force * massInverse;
-    vel += netAcc * t;
+    Vector3D netAcc = acc + force * massInverse;
+    vel += netAcc * static_cast<float>(dt);
     if (damping > 0.0f) {
-        vel = vel * std::pow(damping, t);
+        vel = vel * std::pow(damping, static_cast<float>(dt));
     } else {
         vel = Vector3D::zero();
     }
-    pose.p += physx::PxVec3(vel) * t;
-    force = Vector3D(0.0f, 0.0f, 0.0f);
-    lifetime += t;
+    pose.p += physx::PxVec3(vel) * static_cast<float>(dt);
+    force = Vector3D::zero();
+    lifetime += static_cast<float>(dt);
 }
-
 
 void Particle::cleanup()
 {
     if (renderItem) {
-        renderItem->release(); // Deregistra y destruye el item
+        renderItem->release();
         renderItem = nullptr;
     }
-}
-Vector3D Particle::getForce()
-{
-    return force;
-}
-
-void Particle::addForce(Vector3D Force)
-{
-    force += Force;
 }

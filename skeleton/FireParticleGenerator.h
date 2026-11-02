@@ -4,12 +4,13 @@
 #include <memory>
 #include <random>
 
-class Vector3DDistribution;
+class Distribution;
+class Vector3Distribution;
 
 class FireParticleGenerator : public ParticleGenerator
 {
 private:
-	std::unique_ptr<Vector3DDistribution> m_velDist;
+	std::unique_ptr<Vector3Distribution> m_velDist;
 	std::mt19937 m_colorGen;
 	std::uniform_real_distribution<float> m_colorVar;
 

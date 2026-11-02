@@ -12,7 +12,6 @@ class ParticleGenerator
 protected:
 	std::string m_name;
 	Vector3D m_origin = Vector3D::zero();
-	Vector3D m_gravity = Vector3D(0.0f, -10.0f, 0.0f);
 	Vector4 m_color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	float m_radius = 0.3f;
 	float m_mass = 1.0f;
@@ -34,8 +33,6 @@ public:
 	const std::string& getName() const { return m_name; }
 	void setOrigin(const Vector3D& pos) { m_origin = pos; }
 	Vector3D getOrigin() const { return m_origin; }
-	void setGravity(const Vector3D& g) { m_gravity = g; }
-	Vector3D getGravity() const { return m_gravity; }
 	void setColor(const Vector4& c) { m_color = c; }
 	Vector4 getColor() const { return m_color; }
 	void setRadius(float r) { m_radius = r; }

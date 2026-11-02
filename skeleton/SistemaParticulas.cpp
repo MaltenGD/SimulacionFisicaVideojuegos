@@ -1,6 +1,7 @@
 #include "SistemaParticulas.h"
 #include "Particle.h"
 #include "ParticleGenerator.h"
+#include "ForceGenerator.h"
 #include <cmath>
 
 SistemaParticulas::SistemaParticulas(size_t initialReserve)
@@ -17,6 +18,20 @@ ParticleGenerator* SistemaParticulas::addGenerator(std::unique_ptr<ParticleGener
 {
 	m_generators.push_back(std::move(generator));
 	return m_generators.back().get();
+}
+
+ForceGenerator* SistemaParticulas::addForceGenerator(std::unique_ptr<ForceGenerator> generator)
+{
+	m_forceGenerators.push_back(std::move(generator));
+	return m_forceGenerators.back().get();
+}
+
+void SistemaParticulas::addForceGenerator(ForceGenerator* generator)
+{
+	if (generator)
+	{
+		m_externalForceGenerators.push_back(generator);
+	}
 }
 
 void SistemaParticulas::addParticle(Particle* p)
@@ -42,6 +57,27 @@ void SistemaParticulas::update(double dt)
 		for (Particle* p : newParticles)
 		{
 			m_particles.push_back(p);
+		}
+	}
+
+	for (auto& fg : m_forceGenerators)
+	{
+		fg->update(dt);
+	}
+	for (ForceGenerator* fg : m_externalForceGenerators)
+	{
+		fg->update(dt);
+	}
+
+	for (Particle* p : m_particles)
+	{
+		for (auto& fg : m_forceGenerators)
+		{
+			fg->applyForces(p);
+		}
+		for (ForceGenerator* fg : m_externalForceGenerators)
+		{
+			fg->applyForces(p);
 		}
 	}
 
@@ -77,4 +113,6 @@ void SistemaParticulas::cleanup()
 {
 	clearParticles();
 	m_generators.clear();
+	m_forceGenerators.clear();
+	m_externalForceGenerators.clear();
 }

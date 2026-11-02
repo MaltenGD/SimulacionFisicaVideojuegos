@@ -1,5 +1,5 @@
 #include "FireParticleGenerator.h"
-#include "Vector3DDistribution.h"
+#include "Distribution.h"
 #include "Particle.h"
 
 FireParticleGenerator::FireParticleGenerator(Vector3D origin)
@@ -7,14 +7,19 @@ FireParticleGenerator::FireParticleGenerator(Vector3D origin)
 	  m_colorGen(std::random_device{}()),
 	  m_colorVar(0.0f, 1.0f)
 {
-	m_velDist = std::make_unique<GaussianVectorDistribution>(
+	/*m_velDist = std::make_unique<GaussianVectorDistribution>(
 		Vector3D(0.0f, 8.0f, 0.0f),
 		Vector3D(1.2f, 1.5f, 1.2f)
-	);
+	);*/
+
+	m_velDist = std::make_unique<Vector3Distribution>(
+		new GaussianDistribution(0.0f, 1.2f),
+		new GaussianDistribution(8.0f, 1.5f),
+		new GaussianDistribution(0.0f, 1.2f));
+
 	m_radius = 0.2f;
 	m_lifetime = 1.6f;
 	m_damping = 0.96f;
-	m_gravity = Vector3D(0.0f, 2.0f, 0.0f); // Las particulas de fuego flotan :O
 }
 
 FireParticleGenerator::~FireParticleGenerator() = default;
@@ -32,7 +37,6 @@ Particle* FireParticleGenerator::generateSingleParticle()
 		m_origin,
 		vel,
 		Vector3D::zero(),
-		m_gravity,
 		m_damping,
 		m_radius,
 		fireColor,

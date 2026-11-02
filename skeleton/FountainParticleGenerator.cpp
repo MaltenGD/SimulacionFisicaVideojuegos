@@ -1,15 +1,19 @@
 #include "FountainParticleGenerator.h"
-#include "Vector3DDistribution.h"
+#include "Distribution.h"
 #include "Particle.h"
 
-FountainParticleGenerator::FountainParticleGenerator(Vector3D origin, Vector3D meanVel, Vector3D stdDevVel)
+FountainParticleGenerator::FountainParticleGenerator(Vector3D origin, Vector3D meanVel, Vector3D stdDevVel, float particleMass)
 	: ParticleGenerator("FuenteDeAgua", origin, 3, 0.03)
 {
-	m_velDist = std::make_unique<GaussianVectorDistribution>(meanVel, stdDevVel);
-	m_color = Vector4(0.2f, 0.6f, 1.0f, 1.0f); // Azul	
+	m_velDist = std::make_unique<Vector3Distribution>(
+		new GaussianDistribution(meanVel.x, stdDevVel.x),
+		new GaussianDistribution(meanVel.y, stdDevVel.y),
+		new GaussianDistribution(meanVel.z, stdDevVel.z));
+	m_color = Vector4(0.2f, 0.6f, 1.0f, 1.0f);
 	m_radius = 0.25f;
-	m_lifetime = 4.0f;
-	m_gravity = Vector3D(0.0f, -10.0f, 0.0f);  // g = -10 m/s^2
+	m_lifetime = 6.0f;
+	m_damping = 0.99f;
+	m_mass = particleMass;
 }
 
 FountainParticleGenerator::~FountainParticleGenerator() = default;
@@ -22,7 +26,6 @@ Particle* FountainParticleGenerator::generateSingleParticle()
 		m_origin,
 		vel,
 		Vector3D::zero(),
-		m_gravity,
 		m_damping,
 		m_radius,
 		m_color,

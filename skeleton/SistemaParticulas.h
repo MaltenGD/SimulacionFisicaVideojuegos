@@ -6,14 +6,16 @@
 
 class Particle;
 class ParticleGenerator;
+class ForceGenerator;
 
 class SistemaParticulas
 {
 private:
 	std::vector<Particle*> m_particles;
 	std::vector<std::unique_ptr<ParticleGenerator>> m_generators;
+	std::vector<std::unique_ptr<ForceGenerator>> m_forceGenerators;
+	std::vector<ForceGenerator*> m_externalForceGenerators;
 
-	Vector3D m_gravity = Vector3D(0.0f, -10.0f, 0.0f);
 	float m_lowerYBound = -10.0f;
 	float m_maxHorizontalDist = 150.0f;
 
@@ -24,6 +26,10 @@ public:
 	~SistemaParticulas();
 
 	ParticleGenerator* addGenerator(std::unique_ptr<ParticleGenerator> generator);
+
+	ForceGenerator* addForceGenerator(std::unique_ptr<ForceGenerator> generator);
+	void addForceGenerator(ForceGenerator* generator);
+
 	void addParticle(Particle* p);
 
 	void update(double dt);
@@ -34,7 +40,8 @@ public:
 	const std::vector<std::unique_ptr<ParticleGenerator>>& getGenerators() const { return m_generators; }
 	std::vector<std::unique_ptr<ParticleGenerator>>& getGenerators() { return m_generators; }
 
-	void setGravity(const Vector3D& g) { m_gravity = g; }
-	Vector3D getGravity() const { return m_gravity; }
+	const std::vector<std::unique_ptr<ForceGenerator>>& getForceGenerators() const { return m_forceGenerators; }
+	std::vector<std::unique_ptr<ForceGenerator>>& getForceGenerators() { return m_forceGenerators; }
+
 	void setBounds(float lowerY, float maxHorizontal) { m_lowerYBound = lowerY; m_maxHorizontalDist = maxHorizontal; }
 };
