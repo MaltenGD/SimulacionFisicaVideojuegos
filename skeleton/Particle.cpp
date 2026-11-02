@@ -2,25 +2,41 @@
 #include <cmath>
 
 Particle::Particle(float mass, Vector3D pos, Vector3D vel, Vector3D acc,
-                   float damping, float radius, Vector4 color, float maxLife)
+                   float damping, float radius, Vector4 color, float maxLife,
+                   ParticleShape shape, Vector3D boxHalfExtents)
     : massInverse(mass > 0.0f ? 1.0f / mass : 0.0f),
       pose(physx::PxTransform(pos)),
-      renderItem(new RenderItem(
-          CreateShape(physx::PxSphereGeometry(radius)),
-          &pose,
-          color)),
+      renderItem(nullptr),
       vel(vel),
       acc(acc),
       force(0.0f, 0.0f, 0.0f),
       damping(damping),
       lifetime(0.0f),
       maxLifetime(maxLife),
-      m_alive(true)
-{}
+      m_alive(true),
+      useSemiImplicit(true)
+{
+    physx::PxShape* pxShape = nullptr;
+    if (shape == ParticleShape::BOX) {
+        pxShape = CreateShape(physx::PxBoxGeometry(boxHalfExtents.x, boxHalfExtents.y, boxHalfExtents.z));
+    } else {
+        pxShape = CreateShape(physx::PxSphereGeometry(radius));
+    }
+    renderItem = new RenderItem(pxShape, &pose, color);
+}
 
 Particle::~Particle()
 {
     cleanup();
+}
+
+void Particle::integrate(double dt)
+{
+    if (useSemiImplicit) {
+        integrate_Semi_Implicit(dt);
+    } else {
+        integrate_Direct(dt);
+    }
 }
 
 void Particle::integrate_Direct(double dt)

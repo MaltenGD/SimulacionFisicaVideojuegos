@@ -20,6 +20,7 @@ private:
 	float m_maxHorizontalDist = 150.0f;
 
 	bool isWithinBounds(const Particle* p) const;
+	void notifyParticleDestroyed(Particle* p);
 
 public:
 	explicit SistemaParticulas(size_t initialReserve = 500);

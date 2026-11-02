@@ -3,15 +3,20 @@
 #include "Vector3D.h"
 #include "RenderUtils.hpp"
 
+enum class ParticleShape { SPHERE, BOX };
+
 class Particle
 {
 public:
     Particle(float mass, Vector3D pos, Vector3D vel, Vector3D acc = Vector3D::zero(),
              float damping = 0.99f, float radius = 0.35f,
              Vector4 color = Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-             float maxLife = 10.0f);
+             float maxLife = 10.0f,
+             ParticleShape shape = ParticleShape::SPHERE,
+             Vector3D boxHalfExtents = Vector3D(0.35f, 0.35f, 0.35f));
     virtual ~Particle();
 
+    void integrate(double dt);
     void integrate_Direct(double t);
     void integrate_Semi_Implicit(double t);
     void reset(float Mass, Vector3D Pos, Vector3D Vel, Vector3D Acc,
@@ -31,6 +36,8 @@ public:
 
     Vector3D getPosition() const { return pose.p; }
     void setPosition(const Vector3D& p) { pose.p = p; }
+    Vector3D getPos() const { return pose.p; }
+    void setPos(const Vector3D& p) { pose.p = p; }
 
     Vector3D getVelocity() const { return vel; }
     void setVelocity(const Vector3D& v) { vel = v; }
@@ -45,6 +52,9 @@ public:
     float getMaxLifetime() const { return maxLifetime; }
     float getLifetime() const { return lifetime; }
 
+    void setIntegrationMethod(bool semiImplicit) { useSemiImplicit = semiImplicit; }
+    bool isSemiImplicit() const { return useSemiImplicit; }
+
 protected:
     float massInverse;
     physx::PxTransform pose;
@@ -57,6 +67,7 @@ protected:
     float maxLifetime{ 15.0f };
     bool m_alive{ true };
     bool m_scaleWithLifetime{ false };
+    bool useSemiImplicit{ true };
 
     void updateVisualScale();
 };

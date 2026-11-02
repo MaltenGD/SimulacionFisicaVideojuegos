@@ -27,6 +27,11 @@
     <ClCompile Include="PositionalForceGenerator.cpp" />
     <ClCompile Include="GravityForceGenerator.cpp" />
     <ClCompile Include="Practica3Scene.cpp" />
+    <ClCompile Include="SpringForceGenerator.cpp" />
+    <ClCompile Include="AnchoredSpringFG.cpp" />
+    <ClCompile Include="ElasticRubberFG.cpp" />
+    <ClCompile Include="BuoyancyForceGenerator.cpp" />
+    <ClCompile Include="Practica4Scene.cpp" />
     <ClCompile Include="WindForceGenerator.cpp" />
     <ClCompile Include="WhirlwindForceGenerator.cpp" />
     <ClCompile Include="ExplosionForceGenerator.cpp" />
@@ -59,6 +64,11 @@
     <ClInclude Include="PositionalForceGenerator.h" />
     <ClInclude Include="GravityForceGenerator.h" />
     <ClInclude Include="Practica3Scene.h" />
+    <ClInclude Include="SpringForceGenerator.h" />
+    <ClInclude Include="AnchoredSpringFG.h" />
+    <ClInclude Include="ElasticRubberFG.h" />
+    <ClInclude Include="BuoyancyForceGenerator.h" />
+    <ClInclude Include="Practica4Scene.h" />
     <ClInclude Include="WindForceGenerator.h" />
     <ClInclude Include="WhirlwindForceGenerator.h" />
     <ClInclude Include="ExplosionForceGenerator.h" />

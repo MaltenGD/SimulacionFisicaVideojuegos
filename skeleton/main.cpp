@@ -20,7 +20,7 @@
 
 #include <iostream>
 #include "SceneManager.h"
-#include "Practica3Scene.h"
+#include "Practica4Scene.h"
 
 #include <foundation/PxSimpleTypes.h>
 #include <PxPhysicsVersion.h> // <- Macros for PhysX version checking
@@ -95,9 +95,9 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	SceneManager::instance().registerScene<Practica3Scene>("Practica3");
+	SceneManager::instance().registerScene<Practica4Scene>("Practica4");
 
-	SceneManager::instance().changeScene("Practica3");
+	SceneManager::instance().changeScene("Practica4");
 	
 }
 

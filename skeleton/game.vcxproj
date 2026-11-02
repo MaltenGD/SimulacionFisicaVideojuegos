@@ -266,7 +266,6 @@
     <ClCompile Include="EmptyScene.cpp" />
     <ClCompile Include="FireParticleGenerator.cpp" />
     <ClCompile Include="FogParticleGenerator.cpp" />
-    <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="FountainParticleGenerator.cpp" />
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="main.cpp" />
@@ -284,6 +283,11 @@
     <ClCompile Include="Vector3DDistribution.cpp" />
     <ClCompile Include="GravityForceGenerator.cpp" />
     <ClCompile Include="Practica3Scene.cpp" />
+    <ClCompile Include="SpringForceGenerator.cpp" />
+    <ClCompile Include="AnchoredSpringFG.cpp" />
+    <ClCompile Include="ElasticRubberFG.cpp" />
+    <ClCompile Include="BuoyancyForceGenerator.cpp" />
+    <ClCompile Include="Practica4Scene.cpp" />
     <ClCompile Include="WindForceGenerator.cpp" />
     <ClCompile Include="WhirlwindForceGenerator.cpp" />
     <ClCompile Include="ExplosionForceGenerator.cpp" />
@@ -312,6 +316,11 @@
     <ClInclude Include="Vector3DDistribution.h" />
     <ClInclude Include="GravityForceGenerator.h" />
     <ClInclude Include="Practica3Scene.h" />
+    <ClInclude Include="SpringForceGenerator.h" />
+    <ClInclude Include="AnchoredSpringFG.h" />
+    <ClInclude Include="ElasticRubberFG.h" />
+    <ClInclude Include="BuoyancyForceGenerator.h" />
+    <ClInclude Include="Practica4Scene.h" />
     <ClInclude Include="WindForceGenerator.h" />
     <ClInclude Include="WhirlwindForceGenerator.h" />
     <ClInclude Include="ExplosionForceGenerator.h" />

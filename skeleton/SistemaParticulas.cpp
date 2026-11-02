@@ -49,6 +49,21 @@ bool SistemaParticulas::isWithinBounds(const Particle* p) const
 	return pos.y > m_lowerYBound && horizDist < m_maxHorizontalDist;
 }
 
+void SistemaParticulas::notifyParticleDestroyed(Particle* p)
+{
+	for (auto& generator : m_forceGenerators)
+	{
+		if (generator)
+			generator->onParticleDestroyed(p);
+	}
+
+	for (ForceGenerator* generator : m_externalForceGenerators)
+	{
+		if (generator)
+			generator->onParticleDestroyed(p);
+	}
+}
+
 void SistemaParticulas::update(double dt)
 {
 	for (auto& gen : m_generators)
@@ -84,12 +99,13 @@ void SistemaParticulas::update(double dt)
 	for (auto it = m_particles.begin(); it != m_particles.end(); )
 	{
 		Particle* p = *it;
-		p->integrate_Semi_Implicit(dt);
+		p->integrate(dt);
 
 		bool alive = p->isAlive() && isWithinBounds(p);
 
 		if (!alive)
 		{
+			notifyParticleDestroyed(p);
 			p->deactivate();
 			it = m_particles.erase(it);
 		}
@@ -104,6 +120,7 @@ void SistemaParticulas::clearParticles()
 {
 	for (Particle* p : m_particles)
 	{
+		notifyParticleDestroyed(p);
 		p->deactivate();
 	}
 	m_particles.clear();
