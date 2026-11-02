@@ -29,9 +29,9 @@ void SpringForceGenerator::updateForce(Particle* particle)
 	if (length <= 0.0001f)
 		return;
 
-	float delta_x = length - static_cast<float>(_resting_length);
+	float delta_x = length - _resting_length;
 	Vector3D dir = relative_pos_vector.normalize();
-	Vector3D force = dir * (delta_x * static_cast<float>(_k));
+	Vector3D force = dir * (delta_x * _k);
 
 	particle->addForce(force);
 }

@@ -24,12 +24,12 @@ void ElasticRubberFG::updateForce(Particle* particle)
 	Vector3D relative_pos_vector = _other->getPos() - particle->getPos();
 	float length = relative_pos_vector.magnitude();
 
-	if (length <= static_cast<float>(_resting_length))
+	if (length <= _resting_length)
 		return;
 
-	float delta_x = length - static_cast<float>(_resting_length);
+	float delta_x = length - _resting_length;
 	Vector3D dir = relative_pos_vector.normalize();
-	Vector3D force = dir * (delta_x * static_cast<float>(_k));
+	Vector3D force = dir * (delta_x * _k);
 
 	particle->addForce(force);
 }

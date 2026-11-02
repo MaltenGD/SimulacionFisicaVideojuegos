@@ -48,15 +48,15 @@ void Particle::integrate_Direct(double dt)
     }
 
     Vector3D netAcc = acc + force * massInverse;
-    pose.p += physx::PxVec3(vel) * static_cast<float>(dt);
-    vel += netAcc * static_cast<float>(dt);
+    pose.p += physx::PxVec3(vel) * dt;
+    vel += netAcc * dt;
     if (damping > 0.0f) {
-        vel = vel * std::pow(damping, static_cast<float>(dt));
+        vel = vel * std::pow(damping, dt);
     } else {
         vel = Vector3D::zero();
     }
     force = Vector3D::zero();
-    lifetime += static_cast<float>(dt);
+    lifetime += dt;
     updateVisualScale();
 }
 
@@ -69,15 +69,15 @@ void Particle::integrate_Semi_Implicit(double dt)
     }
 
     Vector3D netAcc = acc + force * massInverse;
-    vel += netAcc * static_cast<float>(dt);
+    vel += netAcc * dt;
     if (damping > 0.0f) {
-        vel = vel * std::pow(damping, static_cast<float>(dt));
+        vel = vel * std::pow(damping, dt);
     } else {
         vel = Vector3D::zero();
     }
-    pose.p += physx::PxVec3(vel) * static_cast<float>(dt);
+    pose.p += physx::PxVec3(vel) * dt;
     force = Vector3D::zero();
-    lifetime += static_cast<float>(dt);
+    lifetime += dt;
     updateVisualScale();
 }
 

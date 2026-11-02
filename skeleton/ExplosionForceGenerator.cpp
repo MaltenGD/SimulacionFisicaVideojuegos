@@ -33,7 +33,7 @@ void ExplosionForceGenerator::update(double dt)
 	if (!m_active)
 		return;
 
-	m_timeElapsed += static_cast<float>(dt);
+	m_timeElapsed += dt;
 
 	if (m_timeElapsed > 4.0f * m_tau)
 	{

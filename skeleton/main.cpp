@@ -117,7 +117,7 @@ void stepPhysics(bool interactive, double t)
 	// This loop allows for multiple physics steps if the accumulated time exceeds the fixed timestep
 	while (gPhysicsTimeAccumulator >= gFixedTimestep)
 	{
-		gScene->simulate(static_cast<PxReal>(gFixedTimestep));
+		gScene->simulate(gFixedTimestep);
 		gScene->fetchResults(true);
 
 		gPhysicsTimeAccumulator -= gFixedTimestep;
