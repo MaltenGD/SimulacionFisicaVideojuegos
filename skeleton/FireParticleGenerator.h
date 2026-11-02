@@ -18,5 +18,5 @@ public:
 	FireParticleGenerator(Vector3D origin = Vector3D(15.0f, 0.0f, 0.0f));
 	~FireParticleGenerator() override;
 
-	Particle* generateSingleParticle() override;
+	Particle* generateSingleParticle(Particle* reusable = nullptr) override;
 };

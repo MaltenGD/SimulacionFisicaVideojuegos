@@ -304,7 +304,7 @@ void startRender(const PxVec3& cameraEye, const PxVec3& cameraDir, PxReal clipNe
 	assert(glGetError() == GL_NO_ERROR);
 }
 
-void renderShape(const PxShape& shape, const PxTransform& transform, const PxVec4& color)
+void renderShape(const PxShape& shape, const PxTransform& transform, const PxVec4& color, float scale)
 {
 	PxGeometryHolder h = shape.getGeometry();
 
@@ -315,6 +315,7 @@ void renderShape(const PxShape& shape, const PxTransform& transform, const PxVec
 	glPushMatrix();
 	PxMat44 mtx(transform);
 	glMultMatrixf(reinterpret_cast<const float*>(&mtx));
+	glScalef(scale, scale, scale);
 	assert(glGetError() == GL_NO_ERROR);
 	glColor4f(color.x, color.y, color.z, 1.0f);
 	assert(glGetError() == GL_NO_ERROR);

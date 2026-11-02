@@ -18,10 +18,26 @@ FountainParticleGenerator::FountainParticleGenerator(Vector3D origin, Vector3D m
 
 FountainParticleGenerator::~FountainParticleGenerator() = default;
 
-Particle* FountainParticleGenerator::generateSingleParticle()
+Particle* FountainParticleGenerator::generateSingleParticle(Particle* reusable)
 {
 	Vector3D vel = m_velDist->sample();
-	return new Particle(
+	if (reusable)
+	{
+		reusable->reset(
+			m_mass,
+			m_origin,
+			vel,
+			Vector3D::zero(),
+			m_damping,
+			m_radius,
+			m_color,
+			m_lifetime
+		);
+		reusable->setScaleWithLifetime(m_scaleWithLifetime);
+		return reusable;
+	}
+
+	Particle* particle = new Particle(
 		m_mass,
 		m_origin,
 		vel,
@@ -31,4 +47,6 @@ Particle* FountainParticleGenerator::generateSingleParticle()
 		m_color,
 		m_lifetime
 	);
+	particle->setScaleWithLifetime(m_scaleWithLifetime);
+	return particle;
 }

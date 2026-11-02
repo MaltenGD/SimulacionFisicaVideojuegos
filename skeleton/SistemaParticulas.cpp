@@ -90,7 +90,7 @@ void SistemaParticulas::update(double dt)
 
 		if (!alive)
 		{
-			delete p;
+			p->deactivate();
 			it = m_particles.erase(it);
 		}
 		else
@@ -104,7 +104,7 @@ void SistemaParticulas::clearParticles()
 {
 	for (Particle* p : m_particles)
 	{
-		delete p;
+		p->deactivate();
 	}
 	m_particles.clear();
 }

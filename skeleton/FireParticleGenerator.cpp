@@ -24,7 +24,7 @@ FireParticleGenerator::FireParticleGenerator(Vector3D origin)
 
 FireParticleGenerator::~FireParticleGenerator() = default;
 
-Particle* FireParticleGenerator::generateSingleParticle()
+Particle* FireParticleGenerator::generateSingleParticle(Particle* reusable)
 {
 	Vector3D vel = m_velDist->sample();
 
@@ -32,7 +32,23 @@ Particle* FireParticleGenerator::generateSingleParticle()
 	float green = 0.2f + 0.6f * m_colorVar(m_colorGen);
 	Vector4 fireColor(1.0f, green, 0.05f, 1.0f);
 
-	return new Particle(
+	if (reusable)
+	{
+		reusable->reset(
+			m_mass,
+			m_origin,
+			vel,
+			Vector3D::zero(),
+			m_damping,
+			m_radius,
+			fireColor,
+			m_lifetime
+		);
+		reusable->setScaleWithLifetime(m_scaleWithLifetime);
+		return reusable;
+	}
+
+	Particle* particle = new Particle(
 		m_mass,
 		m_origin,
 		vel,
@@ -42,4 +58,6 @@ Particle* FireParticleGenerator::generateSingleParticle()
 		fireColor,
 		m_lifetime
 	);
+	particle->setScaleWithLifetime(m_scaleWithLifetime);
+	return particle;
 }

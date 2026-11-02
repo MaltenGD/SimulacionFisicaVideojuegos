@@ -17,5 +17,5 @@ public:
 	                          float particleMass = 1.0f);
 	~FountainParticleGenerator() override;
 
-	Particle* generateSingleParticle() override;
+	Particle* generateSingleParticle(Particle* reusable = nullptr) override;
 };

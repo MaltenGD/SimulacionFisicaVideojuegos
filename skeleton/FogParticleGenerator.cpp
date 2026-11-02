@@ -19,12 +19,28 @@ FogParticleGenerator::FogParticleGenerator(Vector3D minBox, Vector3D maxBox)
 
 FogParticleGenerator::~FogParticleGenerator() = default;
 
-Particle* FogParticleGenerator::generateSingleParticle()
+Particle* FogParticleGenerator::generateSingleParticle(Particle* reusable)
 {
 	Vector3D pos = m_posDist->sample();
 	Vector3D vel = m_velDist->sample();
 
-	return new Particle(
+	if (reusable)
+	{
+		reusable->reset(
+			m_mass,
+			pos,
+			vel,
+			Vector3D::zero(),
+			m_damping,
+			m_radius,
+			m_color,
+			m_lifetime
+		);
+		reusable->setScaleWithLifetime(m_scaleWithLifetime);
+		return reusable;
+	}
+
+	Particle* particle = new Particle(
 		m_mass,
 		pos,
 		vel,
@@ -34,4 +50,6 @@ Particle* FogParticleGenerator::generateSingleParticle()
 		m_color,
 		m_lifetime
 	);
+	particle->setScaleWithLifetime(m_scaleWithLifetime);
+	return particle;
 }

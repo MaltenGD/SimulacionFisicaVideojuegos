@@ -16,5 +16,5 @@ public:
 	                     Vector3D maxBox = Vector3D( 12.0f,  3.5f,  12.0f));
 	~FogParticleGenerator() override;
 
-	Particle* generateSingleParticle() override;
+	Particle* generateSingleParticle(Particle* reusable = nullptr) override;
 };
