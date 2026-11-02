@@ -15,7 +15,6 @@ FogParticleGenerator::FogParticleGenerator(Vector3D minBox, Vector3D maxBox)
 	m_radius = 0.2f;
 	m_lifetime = 6.0f;
 	m_damping = 0.98f;
-	m_gravity = Vector3D(0.0f, -0.3f, 0.0f);
 }
 
 FogParticleGenerator::~FogParticleGenerator() = default;
@@ -30,7 +29,6 @@ Particle* FogParticleGenerator::generateSingleParticle()
 		pos,
 		vel,
 		Vector3D::zero(),
-		m_gravity,
 		m_damping,
 		m_radius,
 		m_color,
