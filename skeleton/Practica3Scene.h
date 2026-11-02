@@ -30,7 +30,7 @@ private:
 	// Generador de fuerzas de gravedad terrestre
 	GravityForceGenerator*   m_gravityEarth     = nullptr; 
 	// Generador de fuerza de gravedad invertida (hacia arriba)
-	GravityForceGenerator*   m_gravityBuoyancy  = nullptr;
+	GravityForceGenerator*   m_gravityEarthInverted  = nullptr;
 
 	// Generador de fuerza de viento
 	WindForceGenerator*      m_windZone         = nullptr;

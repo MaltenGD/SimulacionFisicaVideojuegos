@@ -37,7 +37,7 @@ void Practica3Scene::initEffects()
 		Vector3D(0.0f, 9.8f, 0.0f),
 		Vector4(1.0f, 0.5f, 0.1f, 1.0f)
 	);
-	m_gravityBuoyancy = static_cast<GravityForceGenerator*>(m_sistema.addForceGenerator(std::move(zoneFloat)));
+	m_gravityEarthInverted = static_cast<GravityForceGenerator*>(m_sistema.addForceGenerator(std::move(zoneFloat)));
 
 	auto zoneWind = std::make_unique<WindForceGenerator>(
 		Vector3D(12.0f, 15.0f, 0.0f),
@@ -80,7 +80,7 @@ void Practica3Scene::initEffects()
 	m_explosion = static_cast<ExplosionForceGenerator*>(m_sistema.addForceGenerator(std::move(zoneExplosion)));
 
 	if (m_gravityEarth)    m_gravityEarth->setDebug(m_debugZones);
-	if (m_gravityBuoyancy) m_gravityBuoyancy->setDebug(m_debugZones);
+	if (m_gravityEarthInverted) m_gravityEarthInverted->setDebug(m_debugZones);
 	if (m_windZone)        m_windZone->setDebug(m_debugZones);
 	if (m_whirlwind)       m_whirlwind->setDebug(m_debugZones);
 
@@ -177,7 +177,7 @@ void Practica3Scene::keyPress(unsigned char key, Camera* camera)
 	case 'B':
 		m_debugZones = !m_debugZones;
 		if (m_gravityEarth)    m_gravityEarth->setDebug(m_debugZones);
-		if (m_gravityBuoyancy) m_gravityBuoyancy->setDebug(m_debugZones);
+		if (m_gravityEarthInverted) m_gravityEarthInverted->setDebug(m_debugZones);
 		if (m_windZone)        m_windZone->setDebug(m_debugZones);
 		if (m_whirlwind)       m_whirlwind->setDebug(m_debugZones);
 		break;
@@ -208,7 +208,7 @@ void Practica3Scene::cleanup()
 {
 	m_sistema.cleanup();
 	m_gravityEarth     = nullptr;
-	m_gravityBuoyancy  = nullptr;
+	m_gravityEarthInverted  = nullptr;
 	m_gravityWind      = nullptr;
 	m_gravityWhirlwind = nullptr;
 	m_windZone        = nullptr;
