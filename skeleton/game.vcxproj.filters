@@ -12,7 +12,6 @@
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="Vector3D.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="EmptyScene.cpp" />
     <ClCompile Include="Practica0Axes.cpp" />
@@ -23,7 +22,6 @@
     <ClCompile Include="FogParticleGenerator.cpp" />
     <ClCompile Include="Vector3DDistribution.cpp" />
     <ClCompile Include="Distribution.cpp" />
-    <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="PositionalForceGenerator.cpp" />
     <ClCompile Include="GravityForceGenerator.cpp" />
     <ClCompile Include="Practica3Scene.cpp" />
@@ -36,6 +34,13 @@
     <ClCompile Include="WhirlwindForceGenerator.cpp" />
     <ClCompile Include="ExplosionForceGenerator.cpp" />
     <ClCompile Include="Practica0Scene.cpp" />
+    <ClCompile Include="external\imgui-1.93.0\imgui.cpp" />
+    <ClCompile Include="external\imgui-1.93.0\imgui_demo.cpp" />
+    <ClCompile Include="external\imgui-1.93.0\imgui_draw.cpp" />
+    <ClCompile Include="external\imgui-1.93.0\imgui_tables.cpp" />
+    <ClCompile Include="external\imgui-1.93.0\imgui_widgets.cpp" />
+    <ClCompile Include="external\imgui-1.93.0\backends\imgui_impl_glut.cpp" />
+    <ClCompile Include="external\imgui-1.93.0\backends\imgui_impl_opengl2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />

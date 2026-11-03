@@ -5,6 +5,11 @@
 #include "core.hpp"
 #include "RenderUtils.hpp"
 
+// Dear Imgui
+#include "imgui.h"
+#include "backends/imgui_impl_glut.h"
+#include "backends/imgui_impl_opengl2.h"
+
 
 using namespace physx;
 
@@ -47,24 +52,40 @@ namespace
 {
 	Camera*	sCamera;
 
-void motionCallback(int x, int y)
-{
-	sCamera->handleMotion(x, y);
-}
+	void motionCallback(int x, int y)
+	{
+		ImGui_ImplGLUT_MotionFunc(x, y);
+		if (ImGui::GetIO().WantCaptureMouse)
+		{
+			sCamera->handleMouse(0, 0, x, y); // solo sincroniza la posición, no gira
+			return;
+		}
+		sCamera->handleMotion(x, y);
+	}
 
-void keyboardCallback(unsigned char key, int x, int y)
-{
-	if(key==27)
-		exit(0);
+	void passiveMotionCallback(int x, int y)
+	{
+		ImGui_ImplGLUT_MotionFunc(x, y); // para el hover sin botón pulsado
+	}
 
-	if(!sCamera->handleKey(key, x, y))
-		keyPress(key, sCamera);
-}
+	void keyboardCallback(unsigned char key, int x, int y)
+	{
+		ImGui_ImplGLUT_KeyboardFunc(key, x, y);
+		if (ImGui::GetIO().WantCaptureKeyboard)
+			return; // se está escribiendo en un campo de ImGui
 
-void mouseCallback(int button, int state, int x, int y)
-{
-	sCamera->handleMouse(button, state, x, y);
-}
+		if (key == 27)
+			exit(0);
+
+		if (!sCamera->handleKey(key, x, y))
+			keyPress(key, sCamera);
+	}
+
+	void mouseCallback(int button, int state, int x, int y)
+	{
+		ImGui_ImplGLUT_MouseFunc(button, state, x, y);
+		sCamera->handleMouse(button, state, x, y); // solo guarda la posición , no hace nada mas
+	}
 
 void idleCallback()
 {
@@ -128,6 +149,23 @@ void renderCallback()
 	//	renderActors(&actors[0], static_cast<PxU32>(actors.size()), true, Vector4(1.0f, 0.0f, 0.0f, 1.0f));
 	//}
 
+		// Dear ImGui
+	ImGui_ImplOpenGL2_NewFrame();
+	ImGui_ImplGLUT_NewFrame();
+
+	ImGui::GetIO().DisplaySize = ImVec2(
+		(float)glutGet(GLUT_WINDOW_WIDTH),
+		(float)glutGet(GLUT_WINDOW_HEIGHT));
+
+	ImGui::NewFrame();
+
+	ImGui::ShowDemoWindow(); // TODO: Borrar tras probar que funciona
+
+	ImGui::Render();
+	ImGuiIO& io = ImGui::GetIO();
+	glViewport(0, 0, (GLsizei)io.DisplaySize.x, (GLsizei)io.DisplaySize.y);
+	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+
 	finishRender();
 }
 
@@ -135,23 +173,40 @@ void exitCallback(void)
 {
 	delete sCamera;
 	cleanupPhysics(true);
+
+	// Dear ImGui
+	ImGui_ImplOpenGL2_Shutdown(); // BORRAR ESTO SI CRASHEA AL CERRAR VENTANA
+	ImGui_ImplGLUT_Shutdown(); 
+	ImGui::DestroyContext();
 }
 }
 
 void renderLoop()
 {
 	StartCounter();
-	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(-0.6f,-0.2f,-0.7f));
+	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(-0.6f, -0.2f, -0.7f));
 
 	setupDefaultWindow("Simulacion Fisica Videojuegos");
 	setupDefaultRenderState();
 
+	// Dear ImGui
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGui::StyleColorsDark();
+	ImGui_ImplGLUT_Init();
+	ImGui_ImplOpenGL2_Init();
+
 	glutIdleFunc(idleCallback);
 	glutDisplayFunc(renderCallback);
 	glutKeyboardFunc(keyboardCallback);
+	glutKeyboardUpFunc(ImGui_ImplGLUT_KeyboardUpFunc);
+	glutSpecialFunc(ImGui_ImplGLUT_SpecialFunc);
+	glutSpecialUpFunc(ImGui_ImplGLUT_SpecialUpFunc);
 	glutMouseFunc(mouseCallback);
+	glutMouseWheelFunc(ImGui_ImplGLUT_MouseWheelFunc);
 	glutMotionFunc(motionCallback);
-	motionCallback(0,0);
+	glutPassiveMotionFunc(passiveMotionCallback);
+	motionCallback(0, 0);
 
 	atexit(exitCallback);
 

@@ -5,6 +5,12 @@ skeleton/packages/
 skeleton/packages/*
 skeleton/packages/**
 
+# Cosas de Dear Imgui
+skeleton/imgui.ini
+skeleton/external/imgui-1.93.0/examples/
+skeleton/external/imgui-1.93.0/docs/
+skeleton/external/imgui-1.93.0/.github/
+
 # Ignorar temporales de Visual Studio
 .vs/
 *.user
