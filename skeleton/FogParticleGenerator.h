@@ -27,11 +27,5 @@ public:
 
 	Vector3D getMinBox() const { return m_minBox; }
 	Vector3D getMaxBox() const { return m_maxBox; }
-	void setBounds(const Vector3D& minBox, const Vector3D& maxBox)
-	{
-		m_minBox = minBox;
-		m_maxBox = maxBox;
-		m_origin = (minBox + maxBox) * 0.5f;
-		rebuildDistribution();
-	}
+	void setBounds(const Vector3D& minBox, const Vector3D& maxBox);
 };

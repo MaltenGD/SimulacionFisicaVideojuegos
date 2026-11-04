@@ -52,7 +52,7 @@ public:
     float getDamping() const { return damping; }
     void setDamping(float d) { damping = d; }
 
-    void setMaxLifetime(float maxLife) { maxLifetime = maxLife; }
+    void setMaxLifetime(float maxLife) { maxLifetime = maxLife >= 0.01f ? maxLife : 0.01f; }
     float getMaxLifetime() const { return maxLifetime; }
     float getLifetime() const { return lifetime; }
 

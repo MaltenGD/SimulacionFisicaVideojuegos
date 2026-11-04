@@ -7,6 +7,7 @@ FountainParticleGenerator::FountainParticleGenerator(Vector3D origin, Vector3D m
 	  m_meanVel(meanVel),
 	  m_stdDevVel(stdDevVel)
 {
+	m_stdDevVel = clampComponents(m_stdDevVel, 0.001f);
 	rebuildDistribution();
 	m_color = Vector4(0.2f, 0.6f, 1.0f, 1.0f);
 	m_colorMin = m_color;

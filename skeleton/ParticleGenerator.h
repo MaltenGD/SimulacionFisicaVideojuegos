@@ -48,6 +48,19 @@ protected:
 	// Pool propia del generador; SistemaParticulas no la libera directamente.
 	std::vector<std::unique_ptr<Particle>> m_particlePool;
 
+	static float clampMin(float value, float minValue)
+	{
+		return value >= minValue ? value : minValue;
+	}
+
+	static Vector3D clampComponents(const Vector3D& value, float minValue)
+	{
+		return Vector3D(
+			clampMin(value.x, minValue),
+			clampMin(value.y, minValue),
+			clampMin(value.z, minValue));
+	}
+
 	Particle* acquireParticle();
 
 public:
@@ -89,17 +102,17 @@ public:
 	}
 	Vector4 sampleColor();
 	// Solo afecta a las partículas que se generen o reutilicen después.
-	void setRadius(float r) { m_radius = r; }
+	void setRadius(float r) { m_radius = clampMin(r, 0.01f); }
 	float getRadius() const { return m_radius; }
 	void setMass(float m) { m_mass = m; }
 	float getMass() const { return m_mass; }
 	void setDamping(float d) { m_damping = d; }
 	float getDamping() const { return m_damping; }
-	void setLifetime(float lt) { m_lifetime = lt; }
+	void setLifetime(float lt) { m_lifetime = clampMin(lt, 0.01f); }
 	float getLifetime() const { return m_lifetime; }
 	void setScaleWithLifetime(bool enabled) { m_scaleWithLifetime = enabled; }
 	bool getScaleWithLifetime() const { return m_scaleWithLifetime; }
-	void setEmissionRate(int count, double interval) { m_particlesPerSpawn = count; m_spawnInterval = interval; }
+	void setEmissionRate(int count, double interval) { m_particlesPerSpawn = count > 0 ? count : 1; setSpawnInterval(interval); }
 	int getParticlesPerSpawn() const { return m_particlesPerSpawn; }
 	double getSpawnInterval() const { return m_spawnInterval; }
 	void setSpawnInterval(double interval) { m_spawnInterval = interval > 0.001 ? interval : 0.001; }

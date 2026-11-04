@@ -12,9 +12,9 @@ Particle::Particle(float mass, Vector3D pos, Vector3D vel, Vector3D acc,
       force(0.0f, 0.0f, 0.0f),
       damping(damping),
       lifetime(0.0f),
-      maxLifetime(maxLife),
-      m_radius(radius),
-      m_baseRadius(radius),
+      maxLifetime(maxLife >= 0.01f ? maxLife : 0.01f),
+      m_radius(radius >= 0.01f ? radius : 0.01f),
+      m_baseRadius(m_radius),
       m_shape(shape),
       m_alive(true),
       useSemiImplicit(true)
@@ -23,7 +23,7 @@ Particle::Particle(float mass, Vector3D pos, Vector3D vel, Vector3D acc,
     if (shape == ParticleShape::BOX) {
         pxShape = CreateShape(physx::PxBoxGeometry(boxHalfExtents.x, boxHalfExtents.y, boxHalfExtents.z));
     } else {
-        pxShape = CreateShape(physx::PxSphereGeometry(radius));
+        pxShape = CreateShape(physx::PxSphereGeometry(m_radius));
     }
     renderItem = new RenderItem(pxShape, &pose, color);
 }
@@ -95,7 +95,7 @@ void Particle::reset(float Mass, Vector3D Pos, Vector3D Vel, Vector3D Acc,
     force = Vector3D::zero();
     damping = Damping;
     lifetime = 0.0f;
-    maxLifetime = maxLife;
+    setMaxLifetime(maxLife);
     m_alive = true;
     if (m_radius != radius)
     {
@@ -115,7 +115,7 @@ void Particle::reset(float Mass, Vector3D Pos, Vector3D Vel, Vector3D Acc,
 
 void Particle::setRadius(float radius)
 {
-    m_radius = radius;
+    m_radius = radius >= 0.01f ? radius : 0.01f;
     updateVisualScale();
 }
 

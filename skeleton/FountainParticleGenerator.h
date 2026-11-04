@@ -27,5 +27,5 @@ public:
 	Vector3D getMeanVelocity() const { return m_meanVel; }
 	void setMeanVelocity(const Vector3D& vel) { m_meanVel = vel; rebuildDistribution(); }
 	Vector3D getStdDevVelocity() const { return m_stdDevVel; }
-	void setStdDevVelocity(const Vector3D& stdDev) { m_stdDevVel = stdDev; rebuildDistribution(); }
+	void setStdDevVelocity(const Vector3D& stdDev) { m_stdDevVel = clampComponents(stdDev, 0.001f); rebuildDistribution(); }
 };

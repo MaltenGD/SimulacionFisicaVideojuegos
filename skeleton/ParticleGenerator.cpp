@@ -16,8 +16,8 @@ namespace
 ParticleGenerator::ParticleGenerator(std::string name, Vector3D origin, int particlesPerSpawn, double spawnInterval)
 	: m_name(std::move(name)),
 	  m_origin(origin),
-	  m_particlesPerSpawn(particlesPerSpawn),
-	  m_spawnInterval(spawnInterval)
+	  m_particlesPerSpawn(particlesPerSpawn > 0 ? particlesPerSpawn : 1),
+	  m_spawnInterval(spawnInterval >= 0.001 ? spawnInterval : 0.001)
 {
 	m_colorMin = m_color;
 	m_colorMax = m_color;

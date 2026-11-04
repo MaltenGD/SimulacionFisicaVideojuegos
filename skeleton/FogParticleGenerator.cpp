@@ -3,11 +3,9 @@
 #include "Particle.h"
 
 FogParticleGenerator::FogParticleGenerator(Vector3D minBox, Vector3D maxBox)
-	: ParticleGenerator("Niebla", (minBox + maxBox) * 0.5f, 2, 0.08),
-	  m_minBox(minBox),
-	  m_maxBox(maxBox)
+	: ParticleGenerator("Niebla", (minBox + maxBox) * 0.5f, 2, 0.08)
 {
-	rebuildDistribution();
+	setBounds(minBox, maxBox);
 
 	m_color = Vector4(0.85f, 0.85f, 0.9f, 0.5f);
 	m_colorMin = m_color;
@@ -18,6 +16,14 @@ FogParticleGenerator::FogParticleGenerator(Vector3D minBox, Vector3D maxBox)
 }
 
 FogParticleGenerator::~FogParticleGenerator() = default;
+
+void FogParticleGenerator::setBounds(const Vector3D& minBox, const Vector3D& maxBox)
+{
+	m_minBox = minBox;
+	m_maxBox = m_minBox + clampComponents(maxBox - minBox, 0.1f);
+	m_origin = (m_minBox + m_maxBox) * 0.5f;
+	rebuildDistribution();
+}
 
 void FogParticleGenerator::setOrigin(const Vector3D& pos)
 {
