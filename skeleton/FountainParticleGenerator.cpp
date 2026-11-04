@@ -9,6 +9,8 @@ FountainParticleGenerator::FountainParticleGenerator(Vector3D origin, Vector3D m
 {
 	rebuildDistribution();
 	m_color = Vector4(0.2f, 0.6f, 1.0f, 1.0f);
+	m_colorMin = m_color;
+	m_colorMax = m_color;
 	m_radius = 0.25f;
 	m_lifetime = 6.0f;
 	m_damping = 0.99f;
@@ -19,6 +21,7 @@ FountainParticleGenerator::~FountainParticleGenerator() = default;
 
 void FountainParticleGenerator::rebuildDistribution()
 {
+
 	m_velDist = std::make_unique<Vector3Distribution>(
 		new GaussianDistribution(m_meanVel.x, m_stdDevVel.x),
 		new GaussianDistribution(m_meanVel.y, m_stdDevVel.y),
@@ -28,6 +31,7 @@ void FountainParticleGenerator::rebuildDistribution()
 Particle* FountainParticleGenerator::generateSingleParticle(Particle* reusable)
 {
 	Vector3D vel = m_velDist->sample();
+	Vector4 color = sampleColor();
 	if (reusable)
 	{
 		reusable->reset(
@@ -37,7 +41,7 @@ Particle* FountainParticleGenerator::generateSingleParticle(Particle* reusable)
 			Vector3D::zero(),
 			m_damping,
 			m_radius,
-			m_color,
+			color,
 			m_lifetime
 		);
 		reusable->setScaleWithLifetime(m_scaleWithLifetime);
@@ -51,7 +55,7 @@ Particle* FountainParticleGenerator::generateSingleParticle(Particle* reusable)
 		Vector3D::zero(),
 		m_damping,
 		m_radius,
-		m_color,
+		color,
 		m_lifetime
 	);
 	particle->setScaleWithLifetime(m_scaleWithLifetime);

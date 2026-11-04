@@ -2,7 +2,6 @@
 
 #include "ParticleGenerator.h"
 #include <memory>
-#include <random>
 
 class Distribution;
 class Vector3Distribution;
@@ -11,8 +10,6 @@ class FireParticleGenerator : public ParticleGenerator
 {
 private:
 	std::unique_ptr<Vector3Distribution> m_velDist;
-	std::mt19937 m_colorGen;
-	std::uniform_real_distribution<float> m_colorVar;
 	Vector3D m_meanVel;
 	Vector3D m_stdDevVel;
 

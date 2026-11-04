@@ -13,6 +13,9 @@ Particle::Particle(float mass, Vector3D pos, Vector3D vel, Vector3D acc,
       damping(damping),
       lifetime(0.0f),
       maxLifetime(maxLife),
+      m_radius(radius),
+      m_baseRadius(radius),
+      m_shape(shape),
       m_alive(true),
       useSemiImplicit(true)
 {
@@ -94,6 +97,10 @@ void Particle::reset(float Mass, Vector3D Pos, Vector3D Vel, Vector3D Acc,
     lifetime = 0.0f;
     maxLifetime = maxLife;
     m_alive = true;
+    if (m_radius != radius)
+    {
+        setRadius(radius);
+    }
     if (renderItem)
     {
         renderItem->visible = true;
@@ -103,6 +110,12 @@ void Particle::reset(float Mass, Vector3D Pos, Vector3D Vel, Vector3D Acc,
     {
         renderItem->color = color;
     }
+    updateVisualScale();
+}
+
+void Particle::setRadius(float radius)
+{
+    m_radius = radius;
     updateVisualScale();
 }
 
@@ -137,14 +150,21 @@ void Particle::updateVisualScale()
     }
 
     renderItem->visible = true;
-    if (!m_scaleWithLifetime || maxLifetime <= 0.0f)
+
+    float radiusScale = 1.0f;
+    if (m_shape == ParticleShape::SPHERE && m_baseRadius > 0.0f)
     {
-        renderItem->scale = 1.0f;
-        return;
+        radiusScale = m_radius / m_baseRadius;
     }
 
-    const float lifeRatio = lifetime / maxLifetime;
-    renderItem->scale = std::fmax(0.0f, std::fmin(1.0f, 1.0f - lifeRatio));
+    float lifetimeScale = 1.0f;
+    if (m_scaleWithLifetime && maxLifetime > 0.0f)
+    {
+        const float lifeRatio = lifetime / maxLifetime;
+        lifetimeScale = std::fmax(0.0f, std::fmin(1.0f, 1.0f - lifeRatio));
+    }
+
+    renderItem->scale = radiusScale * lifetimeScale;
 }
 
 void Particle::cleanup()

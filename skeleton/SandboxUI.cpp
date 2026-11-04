@@ -253,10 +253,34 @@ void SandboxUI::drawGeneratorInspector(ParticleGenerator* generator)
 		generator->setOrigin(origin);
 	}
 
-	Vector4 color = generator->getColor();
-	if (ColorEdit4("Color", color))
+	const char* colorModes[] = { "Single Color", "Color Distribution" };
+	int colorMode = static_cast<int>(generator->getColorMode());
+	if (ImGui::Combo("Color Mode", &colorMode, colorModes, 2))
 	{
-		generator->setColor(color);
+		generator->setColorMode(static_cast<ParticleColorMode>(colorMode));
+	}
+
+	if (generator->getColorMode() == ParticleColorMode::SINGLE)
+	{
+		Vector4 color = generator->getColor();
+		if (ColorEdit4("Color", color))
+		{
+			generator->setColor(color);
+		}
+	}
+	else
+	{
+		Vector4 minColor = generator->getColorMin();
+		if (ColorEdit4("Min Color", minColor))
+		{
+			generator->setColorRange(minColor, generator->getColorMax());
+		}
+
+		Vector4 maxColor = generator->getColorMax();
+		if (ColorEdit4("Max Color", maxColor))
+		{
+			generator->setColorRange(generator->getColorMin(), maxColor);
+		}
 	}
 
 	float radius = generator->getRadius();

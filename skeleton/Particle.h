@@ -22,6 +22,8 @@ public:
     void reset(float Mass, Vector3D Pos, Vector3D Vel, Vector3D Acc,
                float Damping, float radius, Vector4 color,
                float maxLife);
+    void setRadius(float radius);
+    float getRadius() const { return m_radius; }
     void deactivate();
     void setScaleWithLifetime(bool enabled);
     void cleanup();
@@ -65,6 +67,9 @@ protected:
     float damping;
     float lifetime{ 0.0f };
     float maxLifetime{ 15.0f };
+    float m_radius{ 0.35f };
+    float m_baseRadius{ 0.35f };
+    ParticleShape m_shape{ ParticleShape::SPHERE };
     bool m_alive{ true };
     bool m_scaleWithLifetime{ false };
     bool useSemiImplicit{ true };

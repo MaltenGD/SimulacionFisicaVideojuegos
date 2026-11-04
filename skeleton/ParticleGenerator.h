@@ -6,6 +6,7 @@
 #include <string>
 #include <memory>
 #include <vector>
+#include <random>
 
 enum class ParticleGeneratorType
 {
@@ -15,12 +16,23 @@ enum class ParticleGeneratorType
 	FOG
 };
 
+enum class ParticleColorMode
+{
+	SINGLE,
+	DISTRIBUTION
+};
+
 class ParticleGenerator
 {
 protected:
 	std::string m_name;
 	Vector3D m_origin = Vector3D::zero();
 	Vector4 m_color = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	ParticleColorMode m_colorMode = ParticleColorMode::SINGLE;
+	Vector4 m_colorMin = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	Vector4 m_colorMax = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+	std::mt19937 m_colorGen{ std::random_device{}() };
+	std::uniform_real_distribution<float> m_colorUnit{ 0.0f, 1.0f };
 	float m_radius = 0.3f;
 	float m_mass = 1.0f;
 	float m_damping = 0.99f;
@@ -57,10 +69,20 @@ public:
 	}
 
 	const std::string& getName() const { return m_name; }
-	void setOrigin(const Vector3D& pos) { m_origin = pos; } // Por alguna razon el fog generator no funciona con esto. TODO: ARREGLAR
+	virtual void setOrigin(const Vector3D& pos) { m_origin = pos; }
 	Vector3D getOrigin() const { return m_origin; }
 	void setColor(const Vector4& c) { m_color = c; }
 	Vector4 getColor() const { return m_color; }
+	ParticleColorMode getColorMode() const { return m_colorMode; }
+	void setColorMode(ParticleColorMode mode) { m_colorMode = mode; }
+	Vector4 getColorMin() const { return m_colorMin; }
+	Vector4 getColorMax() const { return m_colorMax; }
+	void setColorRange(const Vector4& minColor, const Vector4& maxColor)
+	{
+		m_colorMin = minColor;
+		m_colorMax = maxColor;
+	}
+	Vector4 sampleColor();
 	void setRadius(float r) { m_radius = r; }
 	float getRadius() const { return m_radius; }
 	void setMass(float m) { m_mass = m; }

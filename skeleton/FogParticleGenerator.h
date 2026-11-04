@@ -22,6 +22,7 @@ public:
 
 	Particle* generateSingleParticle(Particle* reusable = nullptr) override;
 	ParticleGeneratorType getType() const override { return ParticleGeneratorType::FOG; }
+	void setOrigin(const Vector3D& pos) override;
 
 	Vector3D getMinBox() const { return m_minBox; }
 	Vector3D getMaxBox() const { return m_maxBox; }
