@@ -23,6 +23,27 @@ ParticleGenerator::ParticleGenerator(std::string name, Vector3D origin, int part
 	m_colorMax = m_color;
 }
 
+void ParticleGenerator::trimPool()
+{
+	if (m_particlePool.size() <= m_maxParticles)
+	{
+		return;
+	}
+
+	auto it = m_particlePool.begin();
+	while (it != m_particlePool.end() && m_particlePool.size() > m_maxParticles)
+	{
+		if (!(*it)->isAlive())
+		{
+			it = m_particlePool.erase(it);
+		}
+		else
+		{
+			++it;
+		}
+	}
+}
+
 Vector4 ParticleGenerator::sampleColor()
 {
 	if (m_colorMode == ParticleColorMode::SINGLE)
@@ -40,6 +61,11 @@ Vector4 ParticleGenerator::sampleColor()
 
 Particle* ParticleGenerator::acquireParticle()
 {
+	if (m_particlePool.size() > m_maxParticles)
+	{
+		return nullptr;
+	}
+
 	for (const auto& particle : m_particlePool)
 	{
 		if (!particle->isAlive())
@@ -61,8 +87,21 @@ Particle* ParticleGenerator::acquireParticle()
 	return particle;
 }
 
+void ParticleGenerator::setMaxParticles(size_t maxParticles)
+{
+	m_maxParticles = maxParticles > 0 ? maxParticles : 1;
+	trimPool();
+
+	if (m_maxParticles > m_particlePool.capacity())
+	{
+		m_particlePool.reserve(m_maxParticles);
+	}
+}
+
 std::vector<Particle*> ParticleGenerator::updateAndGenerate(double dt)
 {
+	trimPool();
+
 	std::vector<Particle*> generated;
 	if (!m_active)
 	{

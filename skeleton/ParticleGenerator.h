@@ -61,6 +61,8 @@ protected:
 			clampMin(value.z, minValue));
 	}
 
+	// Elimina las partículas inactivas que excedan el límite actual.
+	void trimPool();
 	Particle* acquireParticle();
 
 public:
@@ -116,8 +118,8 @@ public:
 	int getParticlesPerSpawn() const { return m_particlesPerSpawn; }
 	double getSpawnInterval() const { return m_spawnInterval; }
 	void setSpawnInterval(double interval) { m_spawnInterval = interval > 0.001 ? interval : 0.001; }
-	// Solo reserva capacidad; no elimina partículas ya creadas.
-	void setMaxParticles(size_t maxParticles) { m_maxParticles = maxParticles; m_particlePool.reserve(maxParticles); }
+	// Ajusta el límite; al reducirlo libera las partículas inactivas sobrantes.
+	void setMaxParticles(size_t maxParticles);
 	size_t getMaxParticles() const { return m_maxParticles; }
 	size_t getPoolSize() const { return m_particlePool.size(); }
 
