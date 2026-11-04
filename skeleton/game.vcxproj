@@ -283,6 +283,9 @@
     <ClCompile Include="RenderUtils.cpp" />
     <ClCompile Include="Render\Camera.cpp" />
     <ClCompile Include="Render\Render.cpp" />
+    <ClCompile Include="SandboxScene_Empty.cpp" />
+    <ClCompile Include="SandboxScene_Example.cpp" />
+    <ClCompile Include="SandboxUI.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SistemaParticulas.cpp" />
@@ -315,6 +318,9 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
+    <ClInclude Include="SandboxScene_Empty.h" />
+    <ClInclude Include="SandboxScene_Example.h" />
+    <ClInclude Include="SandboxUI.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SistemaParticulas.h" />

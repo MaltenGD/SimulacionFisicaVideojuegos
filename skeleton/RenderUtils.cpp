@@ -4,6 +4,7 @@
 
 #include "core.hpp"
 #include "RenderUtils.hpp"
+#include "SceneManager.h"
 
 // Dear Imgui
 #include "imgui.h"
@@ -159,7 +160,7 @@ void renderCallback()
 
 	ImGui::NewFrame();
 
-	ImGui::ShowDemoWindow(); // TODO: Borrar tras probar que funciona
+	SceneManager::instance().drawIMGUI();
 
 	ImGui::Render();
 	ImGuiIO& io = ImGui::GetIO();

@@ -2,6 +2,7 @@
 #include "Particle.h"
 #include "ParticleGenerator.h"
 #include "ForceGenerator.h"
+#include <algorithm>
 #include <cmath>
 
 SistemaParticulas::SistemaParticulas(size_t initialReserve)
@@ -20,10 +21,57 @@ ParticleGenerator* SistemaParticulas::addGenerator(std::unique_ptr<ParticleGener
 	return m_generators.back().get();
 }
 
+bool SistemaParticulas::removeGenerator(ParticleGenerator* generator)
+{
+	if (!generator)
+		return false;
+
+	auto it = m_generators.begin();
+	while (it != m_generators.end() && it->get() != generator)
+	{
+		++it;
+	}
+
+	if (it == m_generators.end())
+		return false;
+
+	// El generador controla su propia pool de particulas, borra la pool antes de que el generador se destruya
+	for (Particle* pooled : generator->getPooledParticles())
+	{
+		auto particleIt = std::find(m_particles.begin(), m_particles.end(), pooled);
+		if (particleIt != m_particles.end())
+		{
+			notifyParticleDestroyed(pooled);
+			m_particles.erase(particleIt);
+		}
+	}
+
+	m_generators.erase(it);
+	return true;
+}
+
 ForceGenerator* SistemaParticulas::addForceGenerator(std::unique_ptr<ForceGenerator> generator)
 {
 	m_forceGenerators.push_back(std::move(generator));
 	return m_forceGenerators.back().get();
+}
+
+bool SistemaParticulas::removeForceGenerator(ForceGenerator* generator)
+{
+	if (!generator)
+		return false;
+
+	auto it = m_forceGenerators.begin();
+	while (it != m_forceGenerators.end() && it->get() != generator)
+	{
+		++it;
+	}
+
+	if (it == m_forceGenerators.end())
+		return false;
+
+	m_forceGenerators.erase(it);
+	return true;
 }
 
 void SistemaParticulas::addForceGenerator(ForceGenerator* generator)
@@ -38,6 +86,7 @@ void SistemaParticulas::addParticle(Particle* p)
 {
 	if (p)
 	{
+		m_ownedParticles.emplace_back(p);
 		m_particles.push_back(p);
 	}
 }
@@ -123,6 +172,10 @@ void SistemaParticulas::clearParticles()
 		notifyParticleDestroyed(p);
 		p->deactivate();
 	}
+
+	// delete only particles owned directly by the system; generator pools
+	// keep ownership of the particles they created.
+	m_ownedParticles.clear();
 	m_particles.clear();
 }
 

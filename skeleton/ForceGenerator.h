@@ -4,11 +4,26 @@
 
 class Particle;
 
+enum class ForceGeneratorType
+{
+	UNKNOWN,
+	GRAVITY,
+	WIND,
+	WHIRLWIND,
+	EXPLOSION,
+	BUOYANCY,
+	ANCHORED_SPRING,
+	SPRING,
+	RUBBER
+};
+
 class ForceGenerator
 {
 public:
 	ForceGenerator() = default;
 	virtual ~ForceGenerator() = default;
+
+	virtual ForceGeneratorType getType() const { return ForceGeneratorType::UNKNOWN; }
 
 	virtual void update(double dt) { (void)dt; }
 	virtual void applyForces(Particle* particle) = 0;

@@ -3,41 +3,46 @@
 #include <string>
 #include "PxPhysicsAPI.h"
 
-//Para evitar ambiguedad, ya que PxPhysicsAPI implementa una clase también llamada Camera.
+//Para evitar ambiguedad, ya que PxPhysicsAPI implementa una clase tambiï¿½n llamada Camera.
 namespace Snippets {
     class Camera;
 }
 using Snippets::Camera;
 
-// Clase base para las distintas escenas de la aplicación.
-// Provee la interfaz mínima que debe implementar cualquier escena:
-// inicialización, limpieza, actualización por frame y manejo de teclado.
+// Clase base para las distintas escenas de la aplicaciï¿½n.
+// Provee la interfaz mï¿½nima que debe implementar cualquier escena:
+// inicializaciï¿½n, limpieza, actualizaciï¿½n por frame y manejo de teclado.
 class Scene {
 public:
     // Construye la escena con un nombre identificador.
     explicit Scene(std::string name) : m_name(std::move(name)) {}
     virtual ~Scene() = default;
 
-    // Inicializa recursos de la escena (físicos, gráficos, datos, ...).
+    // Inicializa recursos de la escena (fï¿½sicos, grï¿½ficos, datos, ...).
     virtual void init() = 0;
 
     // Libera los recursos asignados en init().
     virtual void cleanup() = 0;
 
-    // Actualiza la lógica de la escena.
-    // dt: tiempo en segundos transcurrido desde la última actualización.
+    // Actualiza la lï¿½gica de la escena.
+    // dt: tiempo en segundos transcurrido desde la ï¿½ltima actualizaciï¿½n.
     virtual void update(double dt) = 0;
 
-    // Manejo de pulsación de tecla.
-    // Se recibe la tecla pulsada y la transformada de la cámara para
-    // permitir respuestas dependientes de la orientación/posición de la cámara.
-    // Método opcional que puede ser sobrescrito por escenas que lo necesiten.
+    // Manejo de pulsaciï¿½n de tecla.
+    // Se recibe la tecla pulsada y la transformada de la cï¿½mara para
+    // permitir respuestas dependientes de la orientaciï¿½n/posiciï¿½n de la cï¿½mara.
+    // Mï¿½todo opcional que puede ser sobrescrito por escenas que lo necesiten.
     virtual void keyPress(unsigned char key, Camera* camera) {}
+
+
+    //Dibuja la UI de Dear ImGUI
+    //Las escenas que no son de tipo Sandbox dejan esto vacio.
+    virtual void drawIMGUI() {}
 
     // Devuelve el nombre identificador de la escena.
     [[nodiscard]] const std::string& getName() const { return m_name; }
 
 protected:
-    // Nombre de la escena (útil para identificarla en menús o logs).
+    // Nombre de la escena (ï¿½til para identificarla en menï¿½s o logs).
     std::string m_name;
 };

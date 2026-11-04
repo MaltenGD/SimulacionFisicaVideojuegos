@@ -16,6 +16,7 @@ public:
 	                   const Vector4& debugColor = Vector4(0.2f, 0.9f, 0.3f, 1.0f));
 	virtual ~WindForceGenerator() override = default;
 
+	ForceGeneratorType getType() const override { return ForceGeneratorType::WIND; }
 	virtual Vector3D getWindVelocity(const Vector3D& particlePos) const;
 	virtual void applyForces(Particle* particle) override;
 

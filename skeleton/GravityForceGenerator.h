@@ -14,6 +14,7 @@ public:
 	                      const Vector4& debugColor = Vector4(0.2f, 0.7f, 1.0f, 1.0f));
 	virtual ~GravityForceGenerator() override = default;
 
+	ForceGeneratorType getType() const override { return ForceGeneratorType::GRAVITY; }
 	virtual void applyForces(Particle* particle) override;
 
 	void setGravity(const Vector3D& g) { m_gravity = g; }

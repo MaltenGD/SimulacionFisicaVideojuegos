@@ -5,17 +5,11 @@
 FireParticleGenerator::FireParticleGenerator(Vector3D origin)
 	: ParticleGenerator("FuegoYChispas", origin, 4, 0.02),
 	  m_colorGen(std::random_device{}()),
-	  m_colorVar(0.0f, 1.0f)
+	  m_colorVar(0.0f, 1.0f),
+	  m_meanVel(0.0f, 8.0f, 0.0f),
+	  m_stdDevVel(1.2f, 1.5f, 1.2f)
 {
-	/*m_velDist = std::make_unique<GaussianVectorDistribution>(
-		Vector3D(0.0f, 8.0f, 0.0f),
-		Vector3D(1.2f, 1.5f, 1.2f)
-	);*/
-
-	m_velDist = std::make_unique<Vector3Distribution>(
-		new GaussianDistribution(0.0f, 1.2f),
-		new GaussianDistribution(8.0f, 1.5f),
-		new GaussianDistribution(0.0f, 1.2f));
+	rebuildDistribution();
 
 	m_radius = 0.2f;
 	m_lifetime = 1.6f;
@@ -23,6 +17,14 @@ FireParticleGenerator::FireParticleGenerator(Vector3D origin)
 }
 
 FireParticleGenerator::~FireParticleGenerator() = default;
+
+void FireParticleGenerator::rebuildDistribution()
+{
+	m_velDist = std::make_unique<Vector3Distribution>(
+		new GaussianDistribution(m_meanVel.x, m_stdDevVel.x),
+		new GaussianDistribution(m_meanVel.y, m_stdDevVel.y),
+		new GaussianDistribution(m_meanVel.z, m_stdDevVel.z));
+}
 
 Particle* FireParticleGenerator::generateSingleParticle(Particle* reusable)
 {

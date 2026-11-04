@@ -41,6 +41,9 @@
     <ClCompile Include="external\imgui-1.93.0\imgui_widgets.cpp" />
     <ClCompile Include="external\imgui-1.93.0\backends\imgui_impl_glut.cpp" />
     <ClCompile Include="external\imgui-1.93.0\backends\imgui_impl_opengl2.cpp" />
+    <ClCompile Include="SandboxScene_Empty.cpp" />
+    <ClCompile Include="SandboxScene_Example.cpp" />
+    <ClCompile Include="SandboxUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core.hpp" />
@@ -78,6 +81,9 @@
     <ClInclude Include="WhirlwindForceGenerator.h" />
     <ClInclude Include="ExplosionForceGenerator.h" />
     <ClInclude Include="Practica0Scene.h" />
+    <ClInclude Include="SandboxScene_Empty.h" />
+    <ClInclude Include="SandboxScene_Example.h" />
+    <ClInclude Include="SandboxUI.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

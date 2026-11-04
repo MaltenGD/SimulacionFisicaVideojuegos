@@ -20,7 +20,8 @@
 
 #include <iostream>
 #include "SceneManager.h"
-#include "Practica4Scene.h"
+#include "SandboxScene_Empty.h"
+#include "SandboxScene_Example.h"
 
 // IMGUI
 
@@ -98,9 +99,10 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	SceneManager::instance().registerScene<Practica4Scene>("Practica4");
+	SceneManager::instance().registerScene<SandboxScene_Empty>("SandboxScene_Empty");
+	SceneManager::instance().registerScene<SandboxScene_Example>("SandboxScene_Example");
 
-	SceneManager::instance().changeScene("Practica4");
+	SceneManager::instance().changeScene("SandboxScene_Empty");
 	
 }
 

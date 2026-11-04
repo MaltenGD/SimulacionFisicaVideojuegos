@@ -24,6 +24,7 @@ public:
 	void trigger(const Vector3D& center);
 	void trigger();
 
+	ForceGeneratorType getType() const override { return ForceGeneratorType::EXPLOSION; }
 	virtual void update(double dt) override;
 	virtual void applyForces(Particle* particle) override;
 
@@ -44,4 +45,7 @@ public:
 
 	void setExpandingWave(bool exp) { m_expandingWave = exp; }
 	bool isExpandingWave() const { return m_expandingWave; }
+
+	void setExpansionSpeed(float speed) { m_expansionSpeed = speed; }
+	float getExpansionSpeed() const { return m_expansionSpeed; }
 };

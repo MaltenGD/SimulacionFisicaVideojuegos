@@ -21,6 +21,7 @@ public:
     void changeScene(const std::string& name);
     void update(double dt);
     void keyPress(unsigned char key, Camera* camera);
+    void drawIMGUI();
 
     [[nodiscard]] Scene* getCurrentScene() const { return m_currentScene.get(); }
 

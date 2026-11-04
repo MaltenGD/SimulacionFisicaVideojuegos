@@ -7,6 +7,14 @@
 #include <memory>
 #include <vector>
 
+enum class ParticleGeneratorType
+{
+	UNKNOWN,
+	FOUNTAIN,
+	FIRE,
+	FOG
+};
+
 class ParticleGenerator
 {
 protected:
@@ -34,18 +42,39 @@ public:
 
 	virtual std::vector<Particle*> updateAndGenerate(double dt);
 	virtual Particle* generateSingleParticle(Particle* reusable = nullptr) = 0;
+	virtual ParticleGeneratorType getType() const { return ParticleGeneratorType::UNKNOWN; }
+
+
+	std::vector<Particle*> getPooledParticles() const
+	{
+		std::vector<Particle*> particles;
+		particles.reserve(m_particlePool.size());
+		for (const auto& particle : m_particlePool)
+		{
+			particles.push_back(particle.get());
+		}
+		return particles;
+	}
 
 	const std::string& getName() const { return m_name; }
-	void setOrigin(const Vector3D& pos) { m_origin = pos; }
+	void setOrigin(const Vector3D& pos) { m_origin = pos; } // Por alguna razon el fog generator no funciona con esto. TODO: ARREGLAR
 	Vector3D getOrigin() const { return m_origin; }
 	void setColor(const Vector4& c) { m_color = c; }
 	Vector4 getColor() const { return m_color; }
 	void setRadius(float r) { m_radius = r; }
+	float getRadius() const { return m_radius; }
+	void setMass(float m) { m_mass = m; }
+	float getMass() const { return m_mass; }
 	void setDamping(float d) { m_damping = d; }
+	float getDamping() const { return m_damping; }
 	void setLifetime(float lt) { m_lifetime = lt; }
+	float getLifetime() const { return m_lifetime; }
 	void setScaleWithLifetime(bool enabled) { m_scaleWithLifetime = enabled; }
 	bool getScaleWithLifetime() const { return m_scaleWithLifetime; }
 	void setEmissionRate(int count, double interval) { m_particlesPerSpawn = count; m_spawnInterval = interval; }
+	int getParticlesPerSpawn() const { return m_particlesPerSpawn; }
+	double getSpawnInterval() const { return m_spawnInterval; }
+	void setSpawnInterval(double interval) { m_spawnInterval = interval > 0.001 ? interval : 0.001; }
 	void setMaxParticles(size_t maxParticles) { m_maxParticles = maxParticles; m_particlePool.reserve(maxParticles); }
 	size_t getMaxParticles() const { return m_maxParticles; }
 	size_t getPoolSize() const { return m_particlePool.size(); }
