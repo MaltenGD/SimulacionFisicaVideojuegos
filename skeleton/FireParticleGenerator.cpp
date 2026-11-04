@@ -9,6 +9,7 @@ FireParticleGenerator::FireParticleGenerator(Vector3D origin)
 {
 	rebuildDistribution();
 
+	// Mantiene el color naranja/amarillo que tenía el generador original.
 	m_color = Vector4(1.0f, 0.5f, 0.05f, 1.0f);
 	m_colorMode = ParticleColorMode::DISTRIBUTION;
 	m_colorMin = Vector4(1.0f, 0.2f, 0.05f, 1.0f);

@@ -19,9 +19,11 @@ public:
     void integrate(double dt);
     void integrate_Direct(double t);
     void integrate_Semi_Implicit(double t);
+    // Reutiliza una partícula de la pool con los parámetros actuales del generador.
     void reset(float Mass, Vector3D Pos, Vector3D Vel, Vector3D Acc,
                float Damping, float radius, Vector4 color,
                float maxLife);
+    // Cambia el tamaño visual; la geometría original se mantiene.
     void setRadius(float radius);
     float getRadius() const { return m_radius; }
     void deactivate();
@@ -68,6 +70,7 @@ protected:
     float lifetime{ 0.0f };
     float maxLifetime{ 15.0f };
     float m_radius{ 0.35f };
+    // Radio de la geometría original; el radio actual se aplica como escala.
     float m_baseRadius{ 0.35f };
     ParticleShape m_shape{ ParticleShape::SPHERE };
     bool m_alive{ true };

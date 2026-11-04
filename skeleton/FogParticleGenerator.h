@@ -22,6 +22,7 @@ public:
 
 	Particle* generateSingleParticle(Particle* reusable = nullptr) override;
 	ParticleGeneratorType getType() const override { return ParticleGeneratorType::FOG; }
+	// A diferencia de otros setOrigin, este mueve el minBox y maxBox de la caja ya que fog no tiene origin como si tiene Fountain o Fire
 	void setOrigin(const Vector3D& pos) override;
 
 	Vector3D getMinBox() const { return m_minBox; }

@@ -4,6 +4,7 @@
 
 class Particle;
 
+// Para saber el tipo de generador sin tener que hacer dynamic cast; la UI lo usa para elegir el inspector.
 enum class ForceGeneratorType
 {
 	UNKNOWN,
@@ -29,7 +30,7 @@ public:
 	virtual void applyForces(Particle* particle) = 0;
 	virtual void updateForce(Particle* particle) { applyForces(particle); }
 
-	// Called before the particle system destroys a particle referenced by a generator.
-	// Generators that keep raw particle pointers must invalidate them here.
+	// Se llama cuando una partícula deja de estar activa.
+	// Los generadores que guarden punteros deben soltarlos aquí.
 	virtual void onParticleDestroyed(Particle* particle) { (void)particle; }
 };

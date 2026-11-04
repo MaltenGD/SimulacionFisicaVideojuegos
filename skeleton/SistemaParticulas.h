@@ -12,6 +12,7 @@ class SistemaParticulas
 {
 private:
 	std::vector<Particle*> m_particles;
+	// Partículas adoptadas por addParticle; se liberan al limpiar el sistema.
 	std::vector<std::unique_ptr<Particle>> m_ownedParticles;
 	std::vector<std::unique_ptr<ParticleGenerator>> m_generators;
 	std::vector<std::unique_ptr<ForceGenerator>> m_forceGenerators;
@@ -21,6 +22,7 @@ private:
 	float m_maxHorizontalDist = 500;
 
 	bool isWithinBounds(const Particle* p) const;
+	// Avisa a los generadores para que suelten punteros a la partícula.
 	void notifyParticleDestroyed(Particle* p);
 
 public:
@@ -28,15 +30,18 @@ public:
 	~SistemaParticulas();
 
 	ParticleGenerator* addGenerator(std::unique_ptr<ParticleGenerator> generator);
+	// También saca de m_particles las partículas de la pool antes de destruirlo.
 	bool removeGenerator(ParticleGenerator* generator);
 
 	ForceGenerator* addForceGenerator(std::unique_ptr<ForceGenerator> generator);
+	// Versión no propietaria para generadores externos al sistema.
 	void addForceGenerator(ForceGenerator* generator);
 	bool removeForceGenerator(ForceGenerator* generator);
 
 	void addParticle(Particle* p);
 
 	void update(double dt);
+	// Solo libera las partículas propias; las pools de los generadores se mantienen.
 	void clearParticles();
 	void cleanup();
 

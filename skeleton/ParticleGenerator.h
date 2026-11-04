@@ -8,6 +8,7 @@
 #include <vector>
 #include <random>
 
+// Identifica el tipo sin RTTI; la UI lo usa para elegir el inspector.
 enum class ParticleGeneratorType
 {
 	UNKNOWN,
@@ -44,6 +45,7 @@ protected:
 	double m_spawnInterval = 0.05;
 	double m_timeSinceLastSpawn = 0.0;
 	bool m_active = true;
+	// Pool propia del generador; SistemaParticulas no la libera directamente.
 	std::vector<std::unique_ptr<Particle>> m_particlePool;
 
 	Particle* acquireParticle();
@@ -52,11 +54,13 @@ public:
 	ParticleGenerator(std::string name, Vector3D origin, int particlesPerSpawn = 2, double spawnInterval = 0.05);
 	virtual ~ParticleGenerator() = default;
 
+	// Lo llama SistemaParticulas::update; devuelve solo las partículas generadas en este frame.
 	virtual std::vector<Particle*> updateAndGenerate(double dt);
 	virtual Particle* generateSingleParticle(Particle* reusable = nullptr) = 0;
 	virtual ParticleGeneratorType getType() const { return ParticleGeneratorType::UNKNOWN; }
 
 
+	// Se usa al borrar el generador para sacar su pool de la lista activa.
 	std::vector<Particle*> getPooledParticles() const
 	{
 		std::vector<Particle*> particles;
@@ -69,6 +73,7 @@ public:
 	}
 
 	const std::string& getName() const { return m_name; }
+	// Fog lo sobrescribe para mover también su caja.
 	virtual void setOrigin(const Vector3D& pos) { m_origin = pos; }
 	Vector3D getOrigin() const { return m_origin; }
 	void setColor(const Vector4& c) { m_color = c; }
@@ -83,6 +88,7 @@ public:
 		m_colorMax = maxColor;
 	}
 	Vector4 sampleColor();
+	// Solo afecta a las partículas que se generen o reutilicen después.
 	void setRadius(float r) { m_radius = r; }
 	float getRadius() const { return m_radius; }
 	void setMass(float m) { m_mass = m; }
@@ -97,6 +103,7 @@ public:
 	int getParticlesPerSpawn() const { return m_particlesPerSpawn; }
 	double getSpawnInterval() const { return m_spawnInterval; }
 	void setSpawnInterval(double interval) { m_spawnInterval = interval > 0.001 ? interval : 0.001; }
+	// Solo reserva capacidad; no elimina partículas ya creadas.
 	void setMaxParticles(size_t maxParticles) { m_maxParticles = maxParticles; m_particlePool.reserve(maxParticles); }
 	size_t getMaxParticles() const { return m_maxParticles; }
 	size_t getPoolSize() const { return m_particlePool.size(); }

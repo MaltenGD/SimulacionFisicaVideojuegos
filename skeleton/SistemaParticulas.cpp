@@ -35,7 +35,7 @@ bool SistemaParticulas::removeGenerator(ParticleGenerator* generator)
 	if (it == m_generators.end())
 		return false;
 
-	// El generador controla su propia pool de particulas, borra la pool antes de que el generador se destruya
+	// El generador controla su pool; se saca de m_particles antes de destruirlo.
 	for (Particle* pooled : generator->getPooledParticles())
 	{
 		auto particleIt = std::find(m_particles.begin(), m_particles.end(), pooled);
@@ -173,8 +173,7 @@ void SistemaParticulas::clearParticles()
 		p->deactivate();
 	}
 
-	// delete only particles owned directly by the system; generator pools
-	// keep ownership of the particles they created.
+	// Solo se liberan las partículas propias; las pools de los generadores conservan las suyas.
 	m_ownedParticles.clear();
 	m_particles.clear();
 }

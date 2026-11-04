@@ -18,9 +18,11 @@ public:
         m_factories[name] = [name]() { return std::make_unique<T>(name); };
     }
 
+    // El cambio se aplica en el siguiente update para no destruir la escena actual a mitad de frame.
     void changeScene(const std::string& name);
     void update(double dt);
     void keyPress(unsigned char key, Camera* camera);
+    // RenderUtils lo llama después de dibujar la escena y antes de renderizar ImGui.
     void drawIMGUI();
 
     [[nodiscard]] Scene* getCurrentScene() const { return m_currentScene.get(); }

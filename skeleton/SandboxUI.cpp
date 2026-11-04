@@ -21,12 +21,39 @@
 
 namespace
 {
-	bool DragVec3(const char* label, Vector3D& value, float speed = 0.1f)
+	bool DragVec3(const char* label, Vector3D& value, float speed = 0.1f,
+		float minValue = -10000.0f, float maxValue = 10000.0f)
 	{
 		float components[3] = { value.x, value.y, value.z };
-		if (ImGui::DragFloat3(label, components, speed, -10000.0f, 10000.0f, "%.3f"))
+		if (ImGui::DragFloat3(label, components, speed, minValue, maxValue, "%.3f"))
 		{
 			value = Vector3D(components[0], components[1], components[2]);
+			return true;
+		}
+		return false;
+	}
+
+	// Evita que una desviación <= 0 llegue a std::normal_distribution.
+	bool DragPositiveVec3(const char* label, Vector3D& value, float speed = 0.1f)
+	{
+		const float minValue = 0.001f;
+		Vector3D sanitized(
+			std::fmax(value.x, minValue),
+			std::fmax(value.y, minValue),
+			std::fmax(value.z, minValue));
+
+		bool changed = sanitized.x != value.x ||
+			sanitized.y != value.y ||
+			sanitized.z != value.z;
+
+		if (DragVec3(label, sanitized, speed, minValue))
+		{
+			changed = true;
+		}
+
+		if (changed)
+		{
+			value = sanitized;
 			return true;
 		}
 		return false;
@@ -137,6 +164,7 @@ void SandboxUI::draw(bool& paused)
 	}
 
 	ImGui::End();
+	// Se aplican al final para no modificar los vectores mientras se recorren.
 	flushMutations();
 }
 
@@ -349,7 +377,7 @@ void SandboxUI::drawGeneratorInspector(ParticleGenerator* generator)
 		}
 
 		Vector3D stdDevVelocity = fountain->getStdDevVelocity();
-		if (DragVec3("Velocity Std Dev", stdDevVelocity, 0.05f))
+		if (DragPositiveVec3("Velocity Std Dev", stdDevVelocity, 0.05f))
 		{
 			fountain->setStdDevVelocity(stdDevVelocity);
 		}
@@ -365,7 +393,7 @@ void SandboxUI::drawGeneratorInspector(ParticleGenerator* generator)
 		}
 
 		Vector3D stdDevVelocity = fire->getStdDevVelocity();
-		if (DragVec3("Velocity Std Dev", stdDevVelocity, 0.05f))
+		if (DragPositiveVec3("Velocity Std Dev", stdDevVelocity, 0.05f))
 		{
 			fire->setStdDevVelocity(stdDevVelocity);
 		}
