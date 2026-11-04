@@ -3,13 +3,12 @@
 #include "ParticleGenerator.h"
 #include <memory>
 
-class Distribution;
-class Vector3Distribution;
+class GaussianVectorDistribution;
 
 class FireParticleGenerator : public ParticleGenerator
 {
 private:
-	std::unique_ptr<Vector3Distribution> m_velDist;
+	std::unique_ptr<GaussianVectorDistribution> m_velDist;
 	Vector3D m_meanVel;
 	Vector3D m_stdDevVel;
 

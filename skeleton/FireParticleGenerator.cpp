@@ -1,5 +1,5 @@
 #include "FireParticleGenerator.h"
-#include "Distribution.h"
+#include "Vector3DDistribution.h"
 #include "Particle.h"
 
 FireParticleGenerator::FireParticleGenerator(Vector3D origin)
@@ -23,10 +23,7 @@ FireParticleGenerator::~FireParticleGenerator() = default;
 
 void FireParticleGenerator::rebuildDistribution()
 {
-	m_velDist = std::make_unique<Vector3Distribution>(
-		new GaussianDistribution(m_meanVel.x, m_stdDevVel.x),
-		new GaussianDistribution(m_meanVel.y, m_stdDevVel.y),
-		new GaussianDistribution(m_meanVel.z, m_stdDevVel.z));
+	m_velDist = std::make_unique<GaussianVectorDistribution>(m_meanVel, m_stdDevVel);
 }
 
 Particle* FireParticleGenerator::generateSingleParticle(Particle* reusable)

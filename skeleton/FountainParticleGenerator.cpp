@@ -1,5 +1,5 @@
 #include "FountainParticleGenerator.h"
-#include "Distribution.h"
+#include "Vector3DDistribution.h"
 #include "Particle.h"
 
 FountainParticleGenerator::FountainParticleGenerator(Vector3D origin, Vector3D meanVel, Vector3D stdDevVel, float particleMass)
@@ -22,10 +22,7 @@ FountainParticleGenerator::~FountainParticleGenerator() = default;
 void FountainParticleGenerator::rebuildDistribution()
 {
 
-	m_velDist = std::make_unique<Vector3Distribution>(
-		new GaussianDistribution(m_meanVel.x, m_stdDevVel.x),
-		new GaussianDistribution(m_meanVel.y, m_stdDevVel.y),
-		new GaussianDistribution(m_meanVel.z, m_stdDevVel.z));
+	m_velDist = std::make_unique<GaussianVectorDistribution>(m_meanVel, m_stdDevVel);
 }
 
 Particle* FountainParticleGenerator::generateSingleParticle(Particle* reusable)
