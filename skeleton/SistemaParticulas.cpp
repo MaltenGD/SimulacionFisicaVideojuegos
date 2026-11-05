@@ -126,22 +126,27 @@ void SistemaParticulas::update(double dt)
 
 	for (auto& fg : m_forceGenerators)
 	{
-		fg->update(dt);
+		if (fg->isEnabled())
+			fg->update(dt);
 	}
 	for (ForceGenerator* fg : m_externalForceGenerators)
 	{
-		fg->update(dt);
+		if (fg->isEnabled())
+			fg->update(dt);
 	}
 
+	// E.1: cada particula recibe las fuerzas de todos los generadores activos (E.2) por separado.
 	for (Particle* p : m_particles)
 	{
 		for (auto& fg : m_forceGenerators)
 		{
-			fg->applyForces(p);
+			if (fg->isEnabled())
+				p->receiveForcesFrom(*fg);
 		}
 		for (ForceGenerator* fg : m_externalForceGenerators)
 		{
-			fg->applyForces(p);
+			if (fg->isEnabled())
+				p->receiveForcesFrom(*fg);
 		}
 	}
 
@@ -191,4 +196,70 @@ void SistemaParticulas::cleanup()
 	m_generators.clear();
 	m_forceGenerators.clear();
 	m_externalForceGenerators.clear();
+}
+
+bool SistemaParticulas::setGeneratorActive(ParticleGenerator* generator, bool active)
+{
+	if (!generator)
+		return false;
+
+	for (auto& gen : m_generators)
+	{
+		if (gen.get() == generator)
+		{
+			gen->setActive(active);
+			return true;
+		}
+	}
+	return false;
+}
+
+void SistemaParticulas::setAllGeneratorsActive(bool active)
+{
+	for (auto& gen : m_generators)
+	{
+		gen->setActive(active);
+	}
+}
+
+int SistemaParticulas::toggleGeneratorType(ParticleGeneratorType type)
+{
+	bool found = false;
+	bool newState = true;
+	for (auto& gen : m_generators)
+	{
+		if (gen->getType() != type)
+			continue;
+		if (!found)
+		{
+			found = true;
+			newState = !gen->isActive();
+		}
+		gen->setActive(newState);
+	}
+	return found ? (newState ? 1 : 0) : -1;
+}
+
+int SistemaParticulas::toggleForceGeneratorType(ForceGeneratorType type)
+{
+	bool found = false;
+	bool newState = true;
+	auto apply = [&](ForceGenerator* fg)
+		{
+			if (!fg || fg->getType() != type)
+				return;
+			if (!found)
+			{
+				found = true;
+				newState = !fg->isEnabled();
+			}
+			fg->setEnabled(newState);
+		};
+
+	for (auto& fg : m_forceGenerators)
+		apply(fg.get());
+	for (ForceGenerator* fg : m_externalForceGenerators)
+		apply(fg);
+
+	return found ? (newState ? 1 : 0) : -1;
 }

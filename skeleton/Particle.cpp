@@ -1,28 +1,30 @@
 #include "Particle.h"
+#include "ForceGenerator.h"
 #include <cmath>
 
 Particle::Particle(float mass, Vector3D pos, Vector3D vel, Vector3D acc,
-                   float damping, float radius, Vector4 color, float maxLife,
-                   ParticleShape shape, Vector3D boxHalfExtents)
+    float damping, float radius, Vector4 color, float maxLife,
+    ParticleShape shape, Vector3D boxHalfExtents)
     : massInverse(mass > 0.0f ? 1.0f / mass : 0.0f),
-      pose(physx::PxTransform(pos)),
-      renderItem(nullptr),
-      vel(vel),
-      acc(acc),
-      force(0.0f, 0.0f, 0.0f),
-      damping(damping),
-      lifetime(0.0f),
-      maxLifetime(maxLife >= 0.01f ? maxLife : 0.01f),
-      m_radius(radius >= 0.01f ? radius : 0.01f),
-      m_baseRadius(m_radius),
-      m_shape(shape),
-      m_alive(true),
-      useSemiImplicit(true)
+    pose(physx::PxTransform(pos)),
+    renderItem(nullptr),
+    vel(vel),
+    acc(acc),
+    force(0.0f, 0.0f, 0.0f),
+    damping(damping),
+    lifetime(0.0f),
+    maxLifetime(maxLife >= 0.01f ? maxLife : 0.01f),
+    m_radius(radius >= 0.01f ? radius : 0.01f),
+    m_baseRadius(m_radius),
+    m_shape(shape),
+    m_alive(true),
+    useSemiImplicit(true)
 {
     physx::PxShape* pxShape = nullptr;
     if (shape == ParticleShape::BOX) {
         pxShape = CreateShape(physx::PxBoxGeometry(boxHalfExtents.x, boxHalfExtents.y, boxHalfExtents.z));
-    } else {
+    }
+    else {
         pxShape = CreateShape(physx::PxSphereGeometry(m_radius));
     }
     renderItem = new RenderItem(pxShape, &pose, color);
@@ -37,7 +39,8 @@ void Particle::integrate(double dt)
 {
     if (useSemiImplicit) {
         integrate_Semi_Implicit(dt);
-    } else {
+    }
+    else {
         integrate_Direct(dt);
     }
 }
@@ -55,7 +58,8 @@ void Particle::integrate_Direct(double dt)
     vel += netAcc * dt;
     if (damping > 0.0f) {
         vel = vel * std::pow(damping, dt);
-    } else {
+    }
+    else {
         vel = Vector3D::zero();
     }
     force = Vector3D::zero();
@@ -75,7 +79,8 @@ void Particle::integrate_Semi_Implicit(double dt)
     vel += netAcc * dt;
     if (damping > 0.0f) {
         vel = vel * std::pow(damping, dt);
-    } else {
+    }
+    else {
         vel = Vector3D::zero();
     }
     pose.p += physx::PxVec3(vel) * dt;
@@ -85,8 +90,8 @@ void Particle::integrate_Semi_Implicit(double dt)
 }
 
 void Particle::reset(float Mass, Vector3D Pos, Vector3D Vel, Vector3D Acc,
-                     float Damping, float radius, Vector4 color,
-                     float maxLife)
+    float Damping, float radius, Vector4 color,
+    float maxLife)
 {
     massInverse = Mass > 0.0f ? 1.0f / Mass : 0.0f;
     pose = physx::PxTransform(Pos);
@@ -173,4 +178,30 @@ void Particle::cleanup()
         renderItem->release();
         renderItem = nullptr;
     }
+}
+
+void Particle::receiveForcesFrom(ForceGenerator& generator)
+{
+    generator.applyForces(this);
+}
+
+Vector4 Particle::getColor() const
+{
+    return renderItem ? renderItem->color : Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
+void Particle::setColor(const Vector4& color)
+{
+    if (renderItem)
+    {
+        renderItem->color = color;
+    }
+}
+
+Particle* Particle::clone(const Vector3D& pos, const Vector3D& vel) const
+{
+    Particle* copy = new Particle(getMass(), pos, vel, acc, damping, m_radius, getColor(), maxLifetime);
+    copy->setScaleWithLifetime(m_scaleWithLifetime);
+    copy->setIntegrationMethod(useSemiImplicit);
+    return copy;
 }

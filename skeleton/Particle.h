@@ -5,15 +5,17 @@
 
 enum class ParticleShape { SPHERE, BOX };
 
+class ForceGenerator;
+
 class Particle
 {
 public:
     Particle(float mass, Vector3D pos, Vector3D vel, Vector3D acc = Vector3D::zero(),
-             float damping = 0.99f, float radius = 0.35f,
-             Vector4 color = Vector4(1.0f, 1.0f, 1.0f, 1.0f),
-             float maxLife = 10.0f,
-             ParticleShape shape = ParticleShape::SPHERE,
-             Vector3D boxHalfExtents = Vector3D(0.35f, 0.35f, 0.35f));
+        float damping = 0.99f, float radius = 0.35f,
+        Vector4 color = Vector4(1.0f, 1.0f, 1.0f, 1.0f),
+        float maxLife = 10.0f,
+        ParticleShape shape = ParticleShape::SPHERE,
+        Vector3D boxHalfExtents = Vector3D(0.35f, 0.35f, 0.35f));
     virtual ~Particle();
 
     void integrate(double dt);
@@ -21,14 +23,24 @@ public:
     void integrate_Semi_Implicit(double t);
     // Reutiliza una partícula de la pool con los parámetros actuales del generador.
     void reset(float Mass, Vector3D Pos, Vector3D Vel, Vector3D Acc,
-               float Damping, float radius, Vector4 color,
-               float maxLife);
+        float Damping, float radius, Vector4 color,
+        float maxLife);
     // Cambia el tamaño visual; la geometría original se mantiene.
     void setRadius(float radius);
     float getRadius() const { return m_radius; }
     void deactivate();
     void setScaleWithLifetime(bool enabled);
     void cleanup();
+
+    // La particula es quien invoca al generador de fuerza con su propia informacion.
+    void receiveForcesFrom(ForceGenerator& generator);
+    // Los proyectiles llevan la gravedad escalada integrada y ignoran los generadores de gravedad.
+    virtual bool ignoresGravityGenerators() const { return false; }
+    // Copia independiente (con su propio RenderItem) en la posicion y velocidad dadas.
+    // Se usa para crear particulas a partir de la particula modelo de un generador (solo esferas).
+    Particle* clone(const Vector3D& pos, const Vector3D& vel) const;
+    Vector4 getColor() const;
+    void setColor(const Vector4& color);
     virtual bool isAlive() const { return m_alive && pose.p.y > -100.0f && lifetime < maxLifetime; }
     void addForce(const Vector3D& forceToAdd) { force += forceToAdd; }
     Vector3D getForce() const { return force; }

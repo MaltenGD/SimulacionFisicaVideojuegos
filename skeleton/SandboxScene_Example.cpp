@@ -9,8 +9,7 @@
 #include "Particle.h"
 #include <iostream>
 #include <algorithm>
-
-#
+#include "SandboxControls.h"
 
 SandboxScene_Example::SandboxScene_Example(std::string name)
 	: Scene(std::move(name)),
@@ -121,20 +120,28 @@ void SandboxScene_Example::init()
 		Vector4(0.0f, 0.4f, 0.9f, 0.7f)
 	);
 
-	std::cout << "BIENVENIDO AL SANDBOX (ESCENA DE DEMOSTRACIÃ“N):\n";
+	std::cout << "SANDBOX - ESCENA DE MUELLES Y FLOTACION\n";
+	std::cout << "  [P] Pausar   [R] Reiniciar   [,] Escena principal   [.] Esta escena\n";
+	std::cout << "  [ESPACIO] Pistola  [B] Canon  [N] Obus (desde la camara)\n";
+	std::cout << "  Generadores de fuerza: [1] Gravedad  [5] Flotacion  [6] Muelle anclado  [7] Muelle doble  [8] Goma elastica\n";
+	std::cout << "  Empujes: [I] muelle anclado  [T] muelle doble  [G] goma  [Z] barco\n";
+	std::cout << "  [K]/[J] +/- k del muelle  [M] cambia integrador  [U]/[O] +/- masa del barco\n";
 
 }
 
 void SandboxScene_Example::update(double dt)
 {
-	m_sistema.update(dt);
+	if (!m_paused)
+	{
+		m_sistema.update(dt);
+	}
 }
 
 void SandboxScene_Example::keyPress(unsigned char key, Camera* camera)
 {
 	switch (toupper(key))
 	{
-	// --- DISPARO DE PROYECTILES DESDE LA CAMARA (Requisito B) ---
+		// --- DISPARO DE PROYECTILES DESDE LA CAMARA (Requisito B) ---
 	case ' ':
 		if (camera)
 		{
@@ -143,7 +150,7 @@ void SandboxScene_Example::keyPress(unsigned char key, Camera* camera)
 			Projectile* p = Projectile::createPistolBullet(eye + dir * 2.0f, dir);
 			m_sistema.addParticle(p);
 			std::cout << "[DISPARO] Bala de Pistola: m_sim=" << p->getMass()
-			          << " kg, v_sim=" << p->getSimSpeed() << " m/s, g_sim=" << p->getScaledGravity() << " m/s^2\n";
+				<< " kg, v_sim=" << p->getSimSpeed() << " m/s, g_sim=" << p->getScaledGravity() << " m/s^2\n";
 		}
 		break;
 
@@ -155,7 +162,7 @@ void SandboxScene_Example::keyPress(unsigned char key, Camera* camera)
 			Projectile* p = Projectile::createCannonball(eye + dir * 2.5f, dir);
 			m_sistema.addParticle(p);
 			std::cout << "[DISPARO] Bala de Canon: m_sim=" << p->getMass()
-			          << " kg, v_sim=" << p->getSimSpeed() << " m/s, g_sim=" << p->getScaledGravity() << " m/s^2\n";
+				<< " kg, v_sim=" << p->getSimSpeed() << " m/s, g_sim=" << p->getScaledGravity() << " m/s^2\n";
 		}
 		break;
 
@@ -167,7 +174,7 @@ void SandboxScene_Example::keyPress(unsigned char key, Camera* camera)
 			Projectile* p = Projectile::createArtillery(eye + dir * 3.0f, dir);
 			m_sistema.addParticle(p);
 			std::cout << "[DISPARO] Obus de Artilleria: m_sim=" << p->getMass()
-			          << " kg, v_sim=" << p->getSimSpeed() << " m/s, g_sim=" << p->getScaledGravity() << " m/s^2\n";
+				<< " kg, v_sim=" << p->getSimSpeed() << " m/s, g_sim=" << p->getScaledGravity() << " m/s^2\n";
 		}
 		break;
 
@@ -205,7 +212,29 @@ void SandboxScene_Example::keyPress(unsigned char key, Camera* camera)
 		}
 		break;
 
+		// --- Activacion/desactivacion de generadores de fuerza ---
 	case '1':
+		ToggleForceKey(m_sistema, ForceGeneratorType::GRAVITY, "Gravedad");
+		break;
+
+	case '5':
+		ToggleForceKey(m_sistema, ForceGeneratorType::BUOYANCY, "Flotacion");
+		break;
+
+	case '6':
+		ToggleForceKey(m_sistema, ForceGeneratorType::ANCHORED_SPRING, "Muelle anclado");
+		break;
+
+	case '7':
+		ToggleForceKey(m_sistema, ForceGeneratorType::SPRING, "Muelle doble");
+		break;
+
+	case '8':
+		ToggleForceKey(m_sistema, ForceGeneratorType::RUBBER, "Goma elastica");
+		break;
+
+		// --- Empujes de demostracion ---
+	case 'T':
 		if (m_springP1)
 		{
 			m_springP1->addForce(Vector3D(0.0f, 150.0f, 0.0f));
@@ -213,7 +242,7 @@ void SandboxScene_Example::keyPress(unsigned char key, Camera* camera)
 		}
 		break;
 
-	case '2':
+	case 'G':
 		if (m_rubberP1)
 		{
 			m_rubberP1->addForce(Vector3D(0.0f, 150.0f, 0.0f));
@@ -239,12 +268,17 @@ void SandboxScene_Example::keyPress(unsigned char key, Camera* camera)
 		}
 		break;
 
-	case 'P':
+	case 'Z':
 		if (m_boatParticle)
 		{
 			m_boatParticle->addForce(Vector3D(0.0f, -6000.0f, 0.0f));
 			std::cout << "Objeto empujado hacia abajo en el agua\n";
 		}
+		break;
+
+	case 'P':
+		m_paused = !m_paused;
+		std::cout << "Simulacion " << (m_paused ? "pausada" : "reanudada") << "\n";
 		break;
 
 	case 'R':

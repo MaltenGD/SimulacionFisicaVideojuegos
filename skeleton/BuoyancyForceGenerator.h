@@ -31,9 +31,6 @@ public:
 	Particle* getParticle() const { return _particle; }
 	void setParticle(Particle* particle) { _particle = particle; }
 
-	void setEnabled(bool enabled) { _enabled = enabled; }
-	bool isEnabled() const { return _enabled; }
-
 protected:
 	float _height;
 	float _volume;
@@ -42,5 +39,4 @@ protected:
 	float _water_height = 5.0f;
 	Particle* _liquid_particle;
 	Particle* _particle;
-	bool _enabled = true;
 };

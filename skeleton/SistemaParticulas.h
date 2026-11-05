@@ -7,6 +7,8 @@
 class Particle;
 class ParticleGenerator;
 class ForceGenerator;
+enum class ParticleGeneratorType;
+enum class ForceGeneratorType;
 
 class SistemaParticulas
 {
@@ -39,6 +41,16 @@ public:
 	bool removeForceGenerator(ForceGenerator* generator);
 
 	void addParticle(Particle* p);
+
+	// El sistema es quien activa y desactiva sus generadores de particulas.
+	bool setGeneratorActive(ParticleGenerator* generator, bool active);
+	void setAllGeneratorsActive(bool active);
+	// Alterna todos los generadores de un tipo. Devuelve 1 (activos), 0 (inactivos) o -1 (no hay ninguno).
+	int toggleGeneratorType(ParticleGeneratorType type);
+
+	//
+	// Alterna todos los de un tipo. Devuelve 1 (activados), 0 (desactivados) o -1 (no hay ninguno).
+	int toggleForceGeneratorType(ForceGeneratorType type);
 
 	void update(double dt);
 	// Solo libera las partículas propias; las pools de los generadores se mantienen.

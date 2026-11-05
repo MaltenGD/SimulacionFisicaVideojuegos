@@ -33,4 +33,13 @@ public:
 	// Se llama cuando una partícula deja de estar activa.
 	// Los generadores que guarden punteros deben soltarlos aquí.
 	virtual void onParticleDestroyed(Particle* particle) { (void)particle; }
+
+	// Activacion/desactivacion comun a todos los generadores (teclas e ImGui).
+	// SistemaParticulas ni actualiza ni aplica los generadores desactivados.
+	void setEnabled(bool enabled) { m_enabled = enabled; }
+	bool isEnabled() const { return m_enabled; }
+	void toggleEnabled() { m_enabled = !m_enabled; }
+
+protected:
+	bool m_enabled = true;
 };

@@ -3,16 +3,16 @@
 
 SpringForceGenerator::SpringForceGenerator(double k, double resting_length, Particle* other, Particle* particle)
 	: _k(k),
-	  _resting_length(resting_length),
-	  _other(other),
-	  _particle(particle)
+	_resting_length(resting_length),
+	_other(other),
+	_particle(particle)
 {
 }
 
 void SpringForceGenerator::updateForce(Particle* particle)
 {
 
-	if (!_enabled || !particle || !particle->isAlive())
+	if (!m_enabled || !particle || !particle->isAlive())
 		return;
 
 	if (_particle && particle != _particle)
@@ -41,7 +41,7 @@ void SpringForceGenerator::onParticleDestroyed(Particle* particle)
 	if (particle && (particle == _particle || particle == _other))
 	{
 		// The generator cannot safely operate after either endpoint is destroyed.
-		_enabled = false;
+		m_enabled = false;
 		_particle = nullptr;
 		_other = nullptr;
 	}

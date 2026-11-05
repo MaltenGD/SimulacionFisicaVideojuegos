@@ -25,6 +25,7 @@ private:
 	void initEffects();
 
 	SistemaParticulas m_sistema;
+	bool m_paused = false;
 
 	Particle* m_anchoredParticle = nullptr;
 	AnchoredSpringFG* m_anchoredSpring = nullptr;

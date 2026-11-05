@@ -2,9 +2,9 @@
 #include "Particle.h"
 
 GravityForceGenerator::GravityForceGenerator(const Vector3D& origin, const Vector3D& halfExtents,
-                                             const Vector3D& gravity, const Vector4& debugColor)
+	const Vector3D& gravity, const Vector4& debugColor)
 	: PositionalForceGenerator(origin, halfExtents, debugColor),
-	  m_gravity(gravity)
+	m_gravity(gravity)
 {
 }
 
@@ -14,6 +14,9 @@ void GravityForceGenerator::applyForces(Particle* particle)
 		return;
 
 	if (particle->getMassInverse() <= 0.0f)
+		return;
+
+	if (particle->ignoresGravityGenerators())
 		return;
 
 	if (isInside(particle->getPosition()))

@@ -39,19 +39,6 @@ void SceneManager::update(double dt) {
 
 void SceneManager::keyPress(unsigned char key, Camera* camera) {
 
-
-
-    if (key == '.') {
-        changeScene("SandboxScene_Example");
-        return; 
-    }
-    if (key == ',') {
-        changeScene("SandboxScene_Empty");
-        return;
-    }
-
-    
-    
     if (m_currentScene != nullptr) {
         m_currentScene->keyPress(key, camera);
     }

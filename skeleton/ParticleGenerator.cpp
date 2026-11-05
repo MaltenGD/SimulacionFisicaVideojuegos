@@ -15,12 +15,34 @@ namespace
 
 ParticleGenerator::ParticleGenerator(std::string name, Vector3D origin, int particlesPerSpawn, double spawnInterval)
 	: m_name(std::move(name)),
-	  m_origin(origin),
-	  m_particlesPerSpawn(particlesPerSpawn > 0 ? particlesPerSpawn : 1),
-	  m_spawnInterval(spawnInterval >= 0.001 ? spawnInterval : 0.001)
+	m_origin(origin),
+	m_particlesPerSpawn(particlesPerSpawn > 0 ? particlesPerSpawn : 1),
+	m_spawnInterval(spawnInterval >= 0.001 ? spawnInterval : 0.001)
 {
 	m_colorMin = m_color;
 	m_colorMax = m_color;
+
+	m_model = std::make_unique<Particle>(1.0f, Vector3D::zero(), Vector3D::zero(), Vector3D::zero(),
+		0.99f, 0.3f, m_color, 5.0f);
+	m_model->deactivate();
+}
+
+Particle* ParticleGenerator::spawnFromModel(const Vector3D& pos, const Vector3D& vel, Particle* reusable)
+{
+	const Vector4 color = sampleColor();
+
+	if (reusable)
+	{
+		reusable->reset(m_model->getMass(), pos, vel, m_model->getAcceleration(),
+			m_model->getDamping(), m_model->getRadius(), color, m_model->getMaxLifetime());
+		reusable->setScaleWithLifetime(m_scaleWithLifetime);
+		return reusable;
+	}
+
+	Particle* copy = m_model->clone(pos, vel);
+	copy->setColor(color);
+	copy->setScaleWithLifetime(m_scaleWithLifetime);
+	return copy;
 }
 
 void ParticleGenerator::trimPool()

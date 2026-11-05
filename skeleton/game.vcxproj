@@ -320,6 +320,7 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
+    <ClInclude Include="SandboxControls.h" />
     <ClInclude Include="SandboxScene_Empty.h" />
     <ClInclude Include="SandboxScene_Example.h" />
     <ClInclude Include="SandboxUI.h" />

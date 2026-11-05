@@ -21,17 +21,21 @@ class Projectile : public Particle
 {
 public:
 	Projectile(ProjectileType type,
-	           const Vector3D& pos,
-	           const Vector3D& dir,
-	           float realMass,
-	           float realSpeed,
-	           float simSpeed,
-	           float radius = 0.25f,
-	           const Vector4& color = Vector4(1.0f, 0.8f, 0.2f, 1.0f),
-	           float lifetime = 12.0f,
-	           float realGravity = 9.8f);
+		const Vector3D& pos,
+		const Vector3D& dir,
+		float realMass,
+		float realSpeed,
+		float simSpeed,
+		float radius = 0.25f,
+		const Vector4& color = Vector4(1.0f, 0.8f, 0.2f, 1.0f),
+		float lifetime = 12.0f,
+		float realGravity = 9.8f);
 
 	virtual ~Projectile() override = default;
+
+	// El proyectil ya integra su gravedad escalada como aceleracion propia;
+	// los generadores de gravedad no deben sumarle una segunda.
+	bool ignoresGravityGenerators() const override { return true; }
 
 	// Calcula y actualiza el escalado de masa y gravedad a partir de las velocidades.
 	void applyScaling(float realMass, float realSpeed, float simSpeed, float realGravity = 9.8f);

@@ -34,10 +34,9 @@ protected:
 	Vector4 m_colorMax = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
 	std::mt19937 m_colorGen{ std::random_device{}() };
 	std::uniform_real_distribution<float> m_colorUnit{ 0.0f, 1.0f };
-	float m_radius = 0.3f;
-	float m_mass = 1.0f;
-	float m_damping = 0.99f;
-	float m_lifetime = 5.0f;
+	// D.1: particula modelo (oculta, no se simula). Masa, damping, radio y vida maxima viven aqui
+	// y todas las particulas del generador son copias de ella.
+	std::unique_ptr<Particle> m_model;
 	bool m_scaleWithLifetime = false;
 
 	int m_particlesPerSpawn = 2;
@@ -64,6 +63,8 @@ protected:
 	// Elimina las partículas inactivas que excedan el límite actual.
 	void trimPool();
 	Particle* acquireParticle();
+	// Crea (copia del modelo) o reutiliza (reset con los datos del modelo) una particula en pos/vel.
+	Particle* spawnFromModel(const Vector3D& pos, const Vector3D& vel, Particle* reusable);
 
 public:
 	ParticleGenerator(std::string name, Vector3D origin, int particlesPerSpawn = 2, double spawnInterval = 0.05);
@@ -104,14 +105,15 @@ public:
 	}
 	Vector4 sampleColor();
 	// Solo afecta a las partículas que se generen o reutilicen después.
-	void setRadius(float r) { m_radius = clampMin(r, 0.01f); }
-	float getRadius() const { return m_radius; }
-	void setMass(float m) { m_mass = m; }
-	float getMass() const { return m_mass; }
-	void setDamping(float d) { m_damping = d; }
-	float getDamping() const { return m_damping; }
-	void setLifetime(float lt) { m_lifetime = clampMin(lt, 0.01f); }
-	float getLifetime() const { return m_lifetime; }
+	void setRadius(float r) { m_model->setRadius(clampMin(r, 0.01f)); }
+	float getRadius() const { return m_model->getRadius(); }
+	void setMass(float m) { m_model->setMass(m); }
+	float getMass() const { return m_model->getMass(); }
+	void setDamping(float d) { m_model->setDamping(d); }
+	float getDamping() const { return m_model->getDamping(); }
+	void setLifetime(float lt) { m_model->setMaxLifetime(clampMin(lt, 0.01f)); }
+	float getLifetime() const { return m_model->getMaxLifetime(); }
+	const Particle& getModel() const { return *m_model; }
 	void setScaleWithLifetime(bool enabled) { m_scaleWithLifetime = enabled; }
 	bool getScaleWithLifetime() const { return m_scaleWithLifetime; }
 	void setEmissionRate(int count, double interval) { m_particlesPerSpawn = count > 0 ? count : 1; setSpawnInterval(interval); }

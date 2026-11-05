@@ -10,9 +10,9 @@ FogParticleGenerator::FogParticleGenerator(Vector3D minBox, Vector3D maxBox)
 	m_color = Vector4(0.85f, 0.85f, 0.9f, 0.5f);
 	m_colorMin = m_color;
 	m_colorMax = m_color;
-	m_radius = 0.2f;
-	m_lifetime = 6.0f;
-	m_damping = 0.98f;
+	setRadius(0.2f);
+	setLifetime(6.0f);
+	setDamping(0.98f);
 }
 
 FogParticleGenerator::~FogParticleGenerator() = default;
@@ -40,42 +40,14 @@ void FogParticleGenerator::rebuildDistribution()
 	m_posDist = std::make_unique<UniformVectorDistribution>(m_minBox, m_maxBox);
 	m_velDist = std::make_unique<UniformVectorDistribution>(
 		Vector3D(-0.4f, -0.05f, -0.4f),
-		Vector3D( 0.4f,  0.15f,  0.4f)
+		Vector3D(0.4f, 0.15f, 0.4f)
 	);
 }
 
 Particle* FogParticleGenerator::generateSingleParticle(Particle* reusable)
 {
-	Vector3D pos = m_posDist->sample();
-	Vector3D vel = m_velDist->sample();
-	Vector4 color = sampleColor();
-
-	if (reusable)
-	{
-		reusable->reset(
-			m_mass,
-			pos,
-			vel,
-			Vector3D::zero(),
-			m_damping,
-			m_radius,
-			color,
-			m_lifetime
-		);
-		reusable->setScaleWithLifetime(m_scaleWithLifetime);
-		return reusable;
-	}
-
-	Particle* particle = new Particle(
-		m_mass,
-		pos,
-		vel,
-		Vector3D::zero(),
-		m_damping,
-		m_radius,
-		color,
-		m_lifetime
-	);
-	particle->setScaleWithLifetime(m_scaleWithLifetime);
-	return particle;
+	// Usa distribucion uniforme
+	const Vector3D pos = m_posDist->sample();
+	const Vector3D vel = m_velDist->sample();
+	return spawnFromModel(pos, vel, reusable);
 }

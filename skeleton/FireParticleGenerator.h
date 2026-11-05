@@ -11,6 +11,9 @@ private:
 	std::unique_ptr<GaussianVectorDistribution> m_velDist;
 	Vector3D m_meanVel;
 	Vector3D m_stdDevVel;
+	// D.2: posicion de nacimiento gaussiana alrededor del origen.
+	std::unique_ptr<GaussianVectorDistribution> m_posDist;
+	Vector3D m_posStdDev;
 
 	void rebuildDistribution();
 
@@ -25,4 +28,6 @@ public:
 	void setMeanVelocity(const Vector3D& vel) { m_meanVel = vel; rebuildDistribution(); }
 	Vector3D getStdDevVelocity() const { return m_stdDevVel; }
 	void setStdDevVelocity(const Vector3D& stdDev) { m_stdDevVel = clampComponents(stdDev, 0.001f); rebuildDistribution(); }
+	Vector3D getPosStdDev() const { return m_posStdDev; }
+	void setPosStdDev(const Vector3D& stdDev) { m_posStdDev = clampComponents(stdDev, 0.001f); rebuildDistribution(); }
 };

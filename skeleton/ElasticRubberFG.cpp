@@ -9,7 +9,7 @@ ElasticRubberFG::ElasticRubberFG(double k, double resting_length, Particle* othe
 void ElasticRubberFG::updateForce(Particle* particle)
 {
 
-	if (!_enabled || !particle || !particle->isAlive())
+	if (!m_enabled || !particle || !particle->isAlive())
 		return;
 
 	if (_particle && particle != _particle)

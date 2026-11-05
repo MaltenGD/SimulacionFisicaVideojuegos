@@ -22,13 +22,10 @@ public:
 	inline double getRestingLength() const { return _resting_length; }
 	inline Particle* getOther() const { return _other; }
 	inline Particle* getParticle() const { return _particle; }
-	inline void setEnabled(bool enabled) { _enabled = enabled; }
-	inline bool isEnabled() const { return _enabled; }
 
 protected:
 	double _k;
 	double _resting_length;
 	Particle* _other;
 	Particle* _particle;
-	bool _enabled = true;
 };

@@ -97,6 +97,34 @@ namespace
 		}
 	}
 
+	// Tecla asociada a cada tipo (debe coincidir con las escenas Sandbox).
+	const char* ForceKeyHint(ForceGeneratorType type)
+	{
+		switch (type)
+		{
+		case ForceGeneratorType::GRAVITY: return "1";
+		case ForceGeneratorType::WIND: return "2";
+		case ForceGeneratorType::WHIRLWIND: return "3";
+		case ForceGeneratorType::EXPLOSION: return "4 (activar), X (detonar)";
+		case ForceGeneratorType::BUOYANCY: return "5";
+		case ForceGeneratorType::ANCHORED_SPRING: return "6";
+		case ForceGeneratorType::SPRING: return "7";
+		case ForceGeneratorType::RUBBER: return "8";
+		default: return nullptr;
+		}
+	}
+
+	const char* GeneratorKeyHint(ParticleGeneratorType type)
+	{
+		switch (type)
+		{
+		case ParticleGeneratorType::FOUNTAIN: return "F";
+		case ParticleGeneratorType::FIRE: return "L";
+		case ParticleGeneratorType::FOG: return "H";
+		default: return nullptr;
+		}
+	}
+
 	void DrawPositionalFields(PositionalForceGenerator* generator)
 	{
 		Vector3D origin = generator->getOrigin();
@@ -196,7 +224,6 @@ void SandboxUI::drawSceneTab(bool& paused)
 	}
 
 	ImGui::Separator();
-	ImGui::TextWrapped("Create and edit particle generators and force generators from the other tabs. Changes are applied at the end of the ImGui frame.");
 }
 
 void SandboxUI::drawGeneratorsTab()
@@ -272,7 +299,12 @@ void SandboxUI::drawGeneratorInspector(ParticleGenerator* generator)
 	bool active = generator->isActive();
 	if (ImGui::Checkbox("Active", &active))
 	{
-		generator->setActive(active);
+		m_system.setGeneratorActive(generator, active);
+	}
+	if (const char* key = GeneratorKeyHint(generator->getType()))
+	{
+		ImGui::SameLine();
+		ImGui::TextDisabled("Key: [%s]", key);
 	}
 
 	Vector3D origin = generator->getOrigin();
@@ -381,6 +413,12 @@ void SandboxUI::drawGeneratorInspector(ParticleGenerator* generator)
 		{
 			fountain->setStdDevVelocity(stdDevVelocity);
 		}
+
+		Vector3D posStdDev = fountain->getPosStdDev();
+		if (DragPositiveVec3("Position Std Dev", posStdDev, 0.05f))
+		{
+			fountain->setPosStdDev(posStdDev);
+		}
 		break;
 	}
 	case ParticleGeneratorType::FIRE:
@@ -396,6 +434,12 @@ void SandboxUI::drawGeneratorInspector(ParticleGenerator* generator)
 		if (DragPositiveVec3("Velocity Std Dev", stdDevVelocity, 0.05f))
 		{
 			fire->setStdDevVelocity(stdDevVelocity);
+		}
+
+		Vector3D posStdDev = fire->getPosStdDev();
+		if (DragPositiveVec3("Position Std Dev", posStdDev, 0.05f))
+		{
+			fire->setPosStdDev(posStdDev);
 		}
 		break;
 	}
@@ -530,6 +574,17 @@ void SandboxUI::drawForceGeneratorsTab()
 
 void SandboxUI::drawForceGeneratorInspector(ForceGenerator* generator)
 {
+	bool enabled = generator->isEnabled();
+	if (ImGui::Checkbox("Enabled", &enabled))
+	{
+		generator->setEnabled(enabled);
+	}
+	if (const char* key = ForceKeyHint(generator->getType()))
+	{
+		ImGui::SameLine();
+		ImGui::TextDisabled("Key: [%s]", key);
+	}
+
 	switch (generator->getType())
 	{
 	case ForceGeneratorType::GRAVITY:
@@ -687,12 +742,6 @@ void SandboxUI::drawForceGeneratorInspector(ForceGenerator* generator)
 		if (ImGui::DragFloat("Water Height", &waterHeight, 0.05f, -100.0f, 500.0f, "%.2f"))
 		{
 			buoyancy->setWaterHeight(waterHeight);
-		}
-
-		bool enabled = buoyancy->isEnabled();
-		if (ImGui::Checkbox("Enabled", &enabled))
-		{
-			buoyancy->setEnabled(enabled);
 		}
 
 		ImGui::TextDisabled("Currently applies to every particle.");

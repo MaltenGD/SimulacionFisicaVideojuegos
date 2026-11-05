@@ -3,18 +3,18 @@
 
 BuoyancyForceGenerator::BuoyancyForceGenerator(float h, float V, float d, float water_height, Particle* liquid_particle, Particle* particle)
 	: _height(h),
-	  _volume(V),
-	  _liquid_density(d),
-	  _gravity(9.8f),
-	  _water_height(water_height),
-	  _liquid_particle(liquid_particle),
-	  _particle(particle)
+	_volume(V),
+	_liquid_density(d),
+	_gravity(9.8f),
+	_water_height(water_height),
+	_liquid_particle(liquid_particle),
+	_particle(particle)
 {
 }
 
 void BuoyancyForceGenerator::updateForce(Particle* p)
 {
-	if (!_enabled || !p || !p->isAlive())
+	if (!m_enabled || !p || !p->isAlive())
 		return;
 
 	if (_particle && p != _particle)
@@ -46,7 +46,7 @@ void BuoyancyForceGenerator::onParticleDestroyed(Particle* particle)
 {
 	if (particle && (particle == _particle || particle == _liquid_particle))
 	{
-		_enabled = false;
+		m_enabled = false;
 		_particle = nullptr;
 		_liquid_particle = nullptr;
 	}
