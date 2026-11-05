@@ -13,6 +13,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="EmptyScene.cpp" />
     <ClCompile Include="Practica0Axes.cpp" />
     <ClCompile Include="SistemaParticulas.cpp" />
@@ -60,6 +61,7 @@
     <ClInclude Include="EmptyScene.h" />
     <ClInclude Include="Vector3D.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="Practica0Axes.h" />
     <ClInclude Include="SistemaParticulas.h" />
     <ClInclude Include="ParticleGenerator.h" />

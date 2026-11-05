@@ -1,3 +1,5 @@
+﻿#include "Projectile.h"
+#include "Render/Camera.h"
 #include "SandboxScene_Example.h"
 #include "AnchoredSpringFG.h"
 #include "SpringForceGenerator.h"
@@ -119,7 +121,7 @@ void SandboxScene_Example::init()
 		Vector4(0.0f, 0.4f, 0.9f, 0.7f)
 	);
 
-	std::cout << "BIENVENIDO AL SANDBOX (ESCENA DE DEMOSTRACIÓN):\n";
+	std::cout << "BIENVENIDO AL SANDBOX (ESCENA DE DEMOSTRACIÃ“N):\n";
 
 }
 
@@ -130,10 +132,45 @@ void SandboxScene_Example::update(double dt)
 
 void SandboxScene_Example::keyPress(unsigned char key, Camera* camera)
 {
-	PX_UNUSED(camera);
-
 	switch (toupper(key))
 	{
+	// --- DISPARO DE PROYECTILES DESDE LA CAMARA (Requisito B) ---
+	case ' ':
+		if (camera)
+		{
+			Vector3D eye = camera->getEye();
+			Vector3D dir = camera->getDir();
+			Projectile* p = Projectile::createPistolBullet(eye + dir * 2.0f, dir);
+			m_sistema.addParticle(p);
+			std::cout << "[DISPARO] Bala de Pistola: m_sim=" << p->getMass()
+			          << " kg, v_sim=" << p->getSimSpeed() << " m/s, g_sim=" << p->getScaledGravity() << " m/s^2\n";
+		}
+		break;
+
+	case 'B':
+		if (camera)
+		{
+			Vector3D eye = camera->getEye();
+			Vector3D dir = camera->getDir();
+			Projectile* p = Projectile::createCannonball(eye + dir * 2.5f, dir);
+			m_sistema.addParticle(p);
+			std::cout << "[DISPARO] Bala de Canon: m_sim=" << p->getMass()
+			          << " kg, v_sim=" << p->getSimSpeed() << " m/s, g_sim=" << p->getScaledGravity() << " m/s^2\n";
+		}
+		break;
+
+	case 'N':
+		if (camera)
+		{
+			Vector3D eye = camera->getEye();
+			Vector3D dir = camera->getDir();
+			Projectile* p = Projectile::createArtillery(eye + dir * 3.0f, dir);
+			m_sistema.addParticle(p);
+			std::cout << "[DISPARO] Obus de Artilleria: m_sim=" << p->getMass()
+			          << " kg, v_sim=" << p->getSimSpeed() << " m/s, g_sim=" << p->getScaledGravity() << " m/s^2\n";
+		}
+		break;
+
 	case 'I':
 		if (m_anchoredParticle)
 		{

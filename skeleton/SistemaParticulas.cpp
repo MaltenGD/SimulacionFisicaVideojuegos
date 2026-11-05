@@ -157,6 +157,13 @@ void SistemaParticulas::update(double dt)
 			notifyParticleDestroyed(p);
 			p->deactivate();
 			it = m_particles.erase(it);
+
+			auto ownedIt = std::find_if(m_ownedParticles.begin(), m_ownedParticles.end(),
+				[p](const std::unique_ptr<Particle>& owned) { return owned.get() == p; });
+			if (ownedIt != m_ownedParticles.end())
+			{
+				m_ownedParticles.erase(ownedIt);
+			}
 		}
 		else
 		{

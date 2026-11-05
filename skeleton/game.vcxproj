@@ -277,6 +277,7 @@
     <ClCompile Include="ParticleGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
+    <ClCompile Include="Projectile.cpp" />
     <ClCompile Include="PositionalForceGenerator.cpp" />
     <ClCompile Include="Practica0Axes.cpp" />
     <ClCompile Include="Practica0Scene.cpp" />
@@ -312,6 +313,7 @@
     <ClInclude Include="FountainParticleGenerator.h" />
     <ClInclude Include="ParticleGenerator.h" />
     <ClInclude Include="Particle.h" />
+    <ClInclude Include="Projectile.h" />
     <ClInclude Include="PositionalForceGenerator.h" />
     <ClInclude Include="Practica0Axes.h" />
     <ClInclude Include="Practica0Scene.h" />
